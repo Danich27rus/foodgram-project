@@ -1,0 +1,31 @@
+<div class="card" data-id="120">
+	{% load thumbnail %}
+	{% thumbnail recipe.pic "300x300" crop="center" upscale=True as pic %}
+		<!-- <a href="#" class="link" target="_blank"> -->
+			<img src="{{ pic.url }}" alt="Какой-то текст" class="card__image">
+		<!-- </a> -->
+	{% endthumbnail %}
+	<div class="card__body">
+		<a class="card__title link" href="#" target="_blank">{{ recipe.title }}</a>
+		<ul class="card__items">
+			{% for badge in recipe.badge.all %}
+				{% ifequal badge.name 'Завтрак' %}
+					<li class="card__item"><span class="badge badge_style_orange">Завтрак</span></li>
+				{% endifequal %}
+				{% ifequal badge.name 'Обед' %}
+					<li class="card__item"><span class="badge badge_style_green">Обед</span></li>
+				{% endifequal %}
+				{% ifequal badge.name 'Ужин' %}
+					<li class="card__item"><span class="badge badge_style_purple">Ужин</span></li>
+				{% endifequal %}
+			{% endfor %}
+		</ul>
+		<div class="card__items card__items_column">
+			<p class="card__text"><span class="icon-time"></span> {{ recipe.duration }} {{recipe.duration_unit }}</p>
+			<p class="card__text"><span class="icon-user"></span> <a href="#" style="color: black">{{ recipe.author }}</a></p>
+		</div>
+	</div>
+	<div class="card__footer">
+		<button class="button button_style_light-blue" name="purchases" data-out><span class="icon-plus button__icon"></span>Добавить в покупки</button>
+	</div>
+</div>

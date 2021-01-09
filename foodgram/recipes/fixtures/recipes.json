@@ -1,0 +1,86 @@
+[
+  {
+    "model": "recipes.Badge",
+    "pk": 1,
+    "fields": {
+      "name": "Завтрак"
+    }
+  },
+  {
+    "model": "recipes.Badge",
+    "pk": 2,
+    "fields": {
+      "name": "Обед"
+    }
+  },
+  {
+    "model": "recipes.Badge",
+    "pk": 3,
+    "fields": {
+      "name": "Ужин"
+    }
+  },
+  {
+    "model": "recipes.Unit",
+    "pk": 1,
+    "fields": {
+      "name": "ст. л."
+    }
+  },
+  {
+    "model": "recipes.Unit",
+    "pk": 2,
+    "fields": {
+      "name": "ч. л."
+    }
+  },
+  {
+    "model": "recipes.Unit",
+    "pk": 3,
+    "fields": {
+      "name": "г."
+    }
+  },
+  {
+    "model": "recipes.Unit",
+    "pk": 4,
+    "fields": {
+      "name": "кг."
+    }
+  },
+  {
+    "model": "recipes.Unit",
+    "pk": 5,
+    "fields": {
+      "name": "стакан"
+    }
+  },
+  {
+    "model": "recipes.Unit",
+    "pk": 6,
+    "fields": {
+      "name": "т."
+    }
+  },
+  {
+    "model": "recipes.Unit",
+    "pk": 7,
+    "fields": {
+      "name": "шт."
+    }
+  },
+  {
+    "model": "recipes.Unit",
+    "pk": 8,
+    "fields": {
+      "name": "мл."
+    }
+  },
+  {
+    "model": "recipes.Unit",
+    "pk": 9,
+    "fields": {
+      "name": "л."
+    }
+  }
+]
