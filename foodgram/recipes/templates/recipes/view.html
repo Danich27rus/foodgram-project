@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Рецепт{% endblock %}
+{% block content %}
+	<main role="main" class="container">
+		<div class="row">
+			<div class="col-md-3 mb-3 mt-1">
+				<div class="card">
+					{% include "posts/card_profile.html" with user_profile=user_profile following=following %}
+				</div>
+			</div>
+			<div class="col-md-9">
+				{% include "posts/card_post.html" with post=post user_profile=user_profile %}
+				<a name="comments">
+				{% include "posts/comments.html" with comments=comments %}
+				</a>
+			</div>
+		</div>
+	</main>
+{% endblock content %}
+
+{% extends "recipes/base.html" %}
+{% block title %} Последние обновления {% endblock %}
+
+{% block content %}
+    <div class="main__header">
+        <h1 class="main__title">Мои подписки</h1>
+    </div>
+    {% load cache %}
+    {% cache 5 page %}
+        {% for recipe in page %}
+            <div class="card-list"></div>
+                {% include "recipes/preview_recipe.html" with recipe=recipe %}
+            </div>
+        {% endfor %}
+    {% endcache %}
+
+    {% if page.has_other_pages %}
+        {% include "paginator.html" with items=page paginator=paginator%}
+    {% endif %}
+
+{% endblock %}

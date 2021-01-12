@@ -1,24 +1,5 @@
 from django.conf import settings
-from django.contrib.auth.models import AbstractUser
 from django.db import models
-
-
-class User(AbstractUser):
-
-    USER = 'user'
-    MODERATOR = 'moderator'
-    ADMIN = 'admin'
-    DJADMIN = 'djadmin'
-    ROLES = (
-        (USER, 'user'),
-        (MODERATOR, 'moderator'),
-        (ADMIN, 'admin'),
-        (DJADMIN, 'djadmin'),
-    )
-    bio = models.TextField(max_length=500, blank=True, null=True)
-    role = models.CharField(max_length=30, choices=ROLES, default='user')
-    # confirmation_code = models.CharField(max_length=200, default='FOOBAR')
-    email = models.EmailField(max_length=254)
 
 
 class Unit(models.Model):
@@ -101,8 +82,27 @@ class Recipe(models.Model):
 
 class Favorites(models.Model):
 
-    follower = models.ForeignKey(User, on_delete=models.CASCADE)
+    follower = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                 on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.follower} - {self.recipe}'
+
+
+class Follow(models.Model):
+    # пользователь, который подписывается
+    follower = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='follower',
+        on_delete=models.CASCADE
+    )
+    # пользователь, на которого подписывются
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='following',
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return f"Последователь: '{self.follower}', автор: '{self.author}'"

@@ -6,12 +6,4 @@
     "python.autoComplete.extraPaths": ["../foodgram"],
     "python.venvPath": "$WORKON_HOME/foodgram",
     "terminal.integrated.cwd": "${workspaceFolder}/foodgram",
-    "sqltools.connections": [
-        {
-            "previewLimit": 50,
-            "driver": "SQLite",
-            "database": "/home/as/Downloads/db.sqlite3",
-            "name": "s"
-        }
-    ],
 }

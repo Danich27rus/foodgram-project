@@ -8,6 +8,7 @@ User = get_user_model()
 
 
 def index(request, tag_slug=None):
+    # user_profile = get_object_or_404(User, request.user)
     recipes_list = Recipe.objects.all()
     if tag_slug:
         tag = get_object_or_404(Tag, slug=tag_slug)
@@ -19,5 +20,5 @@ def index(request, tag_slug=None):
     return render(
         request,
         'recipes/index.html',
-        {'page': page, 'paginator': paginator}
+        {'page': page, 'paginator': paginator}#, 'user_profile': user_profile},
     )

@@ -1,5 +1,9 @@
+import environ
 from pathlib import Path
 import os
+
+env = environ.Env()
+environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -22,6 +26,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'recipes',
     'api',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -41,7 +46,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR],
+        'DIRS': [TEMPLATES_DIR, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -56,29 +61,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'foodgram.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-
-# AUTH_PASSWORD_VALIDATORS = [
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-#     },
-# ]
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': f'django.contrib.auth.password_validation.{name}'}
@@ -100,7 +88,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files', 'media')
 
 MEDIA_URL = '/media/'
@@ -114,4 +101,20 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-AUTH_USER_MODEL = 'recipes.User'
+# AUTH_USER_MODEL = 'account.User'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+MAILER_EMAIL_BACKEND = EMAIL_BACKEND
+
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
