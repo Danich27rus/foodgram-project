@@ -1,9 +1,0 @@
-{
-    "python.linting.pylintEnabled": false,
-    "python.linting.flake8Enabled": true,
-    "python.linting.enabled": true,
-    "python.pythonPath": "/home/dev/.virtualenvs/foodgram/bin/python",
-    "python.autoComplete.extraPaths": ["../foodgram"],
-    "python.venvPath": "$WORKON_HOME/foodgram",
-    "terminal.integrated.cwd": "${workspaceFolder}/foodgram",
-}
