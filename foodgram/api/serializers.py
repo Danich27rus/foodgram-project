@@ -4,6 +4,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from recipes.models import Recipe
 
+
 class RecipeSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
         slug_field='username',

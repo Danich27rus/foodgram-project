@@ -1,0 +1,45 @@
+{% load thumbnail recipes_filters %}
+{% load mathfilters %}
+<div class="card-user" data-author="{{ follow.author.id }}">
+    <div class="card-user__header">
+        <h2 class="card-user__title">
+            {% if follow.author.first_name %}
+                {{ follow.author.first_name }}
+            {% else %}
+                {{ follow.author.username }}
+            {% endif %}
+        </h2>
+        </a>
+    </div>
+    <div class="card-user__body">
+        <ul class="card-user__items">
+            {% for recipe in follow.author.recipe.all %}
+                {% if forloop.counter < 4 %}
+                    <li class="card-user__item">
+                        <div class="recipe">
+                                {% thumbnail recipe.pic "72x72" crop="center" upscale=True as pic %}
+                                    <img src="{{ pic.url }}" alt="{{ recipe.title }}" class="recipe__image">
+                                {% endthumbnail %}
+                                <h3 class="recipe__title">{{ recipe.title }}</h3>
+                            <p class="recipe__text"><span class="icon-time"></span> {{ recipe.duration }} мин.</p>
+                        </div>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if follow.author.recipe.count > 3 %}
+                <li class="card-user__item">
+                    <a href="{% url 'profile_view' user_id=follow.author.id %}" class="card-user__link link">Еще {{ follow.author.recipe.count|sub:4|abs }} рецептов...</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% if request.user.is_authenticated %}
+        <div class="single-card__item">
+            {% if recipe.author|subscribed:request.user %}
+                    <button class="button button_style_light-blue button_size_auto" name="subscribe" >Отписаться от автора</button></p>
+            {% else %}
+                    <button class="button button_style_light-blue button_size_auto" name="subscribe" data-out>Подписаться на автора</button></p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

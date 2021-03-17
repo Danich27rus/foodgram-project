@@ -1,13 +1,18 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include
-from django.urls import path
+from django.urls import include, path
 
+handler404 = 'recipes.views.page_not_found'  # noqa
+handler500 = 'recipes.views.server_error'  # noqa
+handler403 = 'recipes.views.permission_denied'  # noqa
 
 urlpatterns = [
     path('', include('recipes.urls')),
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
-    # path('api/', include('api.urls')),
-    # path('redoc/', TemplateView.as_view(template_name='redoc.html'),
-    #      name='redoc'),
+    path('api/', include('api.urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

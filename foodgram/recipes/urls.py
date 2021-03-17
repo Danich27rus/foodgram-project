@@ -3,34 +3,22 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-#     # path('follow/', views.follow_index, name='follow_index'),
-    path('', views.index, name='index'),
-#     # path('new/', views.new_post, name='new_post'),
-#     # path('group/<slug:slug>/', views.group_posts, name='group_posts'),
-#     # path('<str:username>/', views.profile, name='profile'),
-#     # path('<str:username>/<int:post_id>/', views.post_view, name='post'),
-#     # path(
-#     #     '<str:username>/<int:post_id>/edit/',
-#     #     views.post_edit,
-#     #     name='post_edit'
-#     # ),
-#     # path(
-#     #     '<str:username>/<int:post_id>/comment/',
-#     #     views.add_comment,
-#     #     name='add_comment'
-#     # ),
+     path('', views.IndexView.as_view(), name='index'),
 
-#     # path(
-#     #     '<str:username>/follow/',
-#     #     views.profile_follow,
-#     #     name='profile_follow'
-#     # ),
-#     # path(
-#     #     '<str:username>/unfollow/',
-#     #     views.profile_unfollow,
-#     #     name='profile_unfollow'
-#     # ),
-#     # path('tag/<slug:tag_slug>/',
-#     #     views.index,
-#     #     name='posts_list_tagged'),
+     path('recipes/<int:recipe_id>', views.recipe_view,
+          name='recipe_view'),
+     path('new/', views.new_view,
+          name='recipe_new'),
+     path('recipes/<int:recipe_id>/edit', views.edit_view,
+          name='recipe_edit'),
+     path('recipes/<int:recipe_id>/delete', views.delete_view,
+          name='recipe_delete'),
+
+     path('favorites', views.FavoritesView.as_view(), name='favorites'),
+
+     path('purchases/', views.PurchaseView.as_view(), name='purchases_view'),
+
+     path('follows/', views.Follows.as_view(), name='follows'),
+
+     path('shoplist', views.GetShopList.as_view(), name='shoplist'),
 ]

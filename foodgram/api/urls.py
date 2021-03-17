@@ -1,53 +1,20 @@
-# from django.urls import include, path
-from rest_framework.routers import DefaultRouter
-
-from .views import RecipeList
-from django.urls import include
+from .views import (GetIngredients, FollowTo, FollowDelete, FavoriteView,
+                    PurchaseView)
 from django.urls import path
 
-# router_v1 = DefaultRouter()
-# router_v1.register(r'', RecipeList, basename='index')
 
 urlpatterns = [
-    path('', RecipeList.as_view(),
-         name='index'),
+    path('subscriptions', FollowTo.as_view(), name='follow_to'),
+    path('subscriptions/<int:author_id>', FollowDelete.as_view(),
+         name='follow_delete'),
+
+    path('favorites', FavoriteView.as_view(), name='favorite_view'),
+    path('favorites/<int:recipe_id>', FavoriteView.as_view(),
+         name='favorite_delete'),
+
+    path('purchases', PurchaseView.as_view(), name='purchase'),
+    path('purchases/<int:recipe_id>', PurchaseView.as_view(),
+         name='purchase_delete'),
+
+    path('ingredients/', GetIngredients.as_view(), name='ingredients'),
 ]
-# from .views import (CategoryViewSet, CommentListCreateSet,
-#                     CommentRetrieveUpdateDestroyAPIView, GenreViewSet,
-#                     MyTokenObtainPairView, PushEmailViewSet,
-#                     ReviewListCreateSet, ReviewRetrieveUpdateDestroyAPIView,
-#                     TitleViewSet, UsersViewSet)
-
-# router_v1 = DefaultRouter()
-# router_v1.register(r'auth/email', PushEmailViewSet, basename='register')
-# router_v1.register(r'users', UsersViewSet, basename='users')
-# router_v1.register(r'categories', CategoryViewSet, basename='categories')
-# router_v1.register(r'genres', GenreViewSet, basename='genres')
-# router_v1.register(r'titles', TitleViewSet, basename='titles')
-# router_v1.register(
-#     r'titles/(?P<title_id>\d+)/reviews',
-#     ReviewListCreateSet,
-#     basename='comments'
-# )
-# router_v1.register(
-#     r'titles/(?P<title_id>\d+)/reviews/(?P<review_id>\d+)/comments',
-#     CommentListCreateSet,
-#     basename='comments'
-# )
-
-
-# urlpatterns = [
-#     path('v1/auth/token/', MyTokenObtainPairView.as_view(),
-#          name='token_obtain_pair'),
-#     path(
-#          'v1/titles/<int:title_id>/reviews/<int:review_id>/',
-#          ReviewRetrieveUpdateDestroyAPIView.as_view(),
-#          name='review'
-#          ),
-#     path('v1/titles/<int:title_id>/reviews/<int:review_id>/'
-#          'comments/<int:comment_id>/',
-#          CommentRetrieveUpdateDestroyAPIView.as_view(),
-#          name='review'
-#          ),
-#     path('v1/', include(router_v1.urls)),
-# ]
