@@ -16,7 +16,7 @@ services:
       - ./.env
 
   web:
-    image: sorochinskii/foodgram_project:latest
+    image: sorochinskii/foodgram:latest
     container_name: foodgram
     restart: always
     volumes:
