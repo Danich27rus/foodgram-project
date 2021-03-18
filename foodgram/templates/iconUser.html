@@ -1,8 +1,0 @@
-<p class="card__text">
-    {% if author.id %}
-        <span class="icon-user"></span>
-        <a href="{% url 'profile_view' user_id=author.id %}" style="color: black">
-            {{ author }}
-        </a>
-    {% endif %}
-</p>
