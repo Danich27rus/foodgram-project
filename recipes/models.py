@@ -74,7 +74,7 @@ class Recipe(models.Model):
         related_name='recipe',
         through='Ingredient',
         blank=True,
-        )
+    )
 
     slug = models.SlugField()
 

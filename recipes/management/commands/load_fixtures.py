@@ -1,6 +1,6 @@
 import csv
 import os
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.conf import settings
 
 from recipes.models import Product, Tag
@@ -19,7 +19,7 @@ class Command(BaseCommand):
                 _, created = Product.objects.get_or_create(
                     title=row[0],
                     dimension=row[1],
-                    )
+                )
             f.close()
 
         file_path = os.path.join(settings.BASE_DIR,
@@ -32,5 +32,5 @@ class Command(BaseCommand):
                     name=row[0],
                     color=row[1],
                     slug=row[2]
-                    )
+                )
             f.close()
