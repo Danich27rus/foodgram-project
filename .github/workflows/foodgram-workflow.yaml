@@ -105,9 +105,8 @@ jobs:
           script: |
             cd ~
             cd ./code
-            docker container prune
-            docker rmi sorochinskii/foodgram_project -f
-            docker pull sorochinskii/foodgram_project:latest
+            docker rmi sorochinskii/foodgram -f
+            docker pull sorochinskii/foodgram:latest
             docker-compose up --force-recreate -d web
 
   send_message:

@@ -38,7 +38,6 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./static_volume:/code/files/static
       - ./media_volume:/code/files/media
-
     ports:
       - "80:80"
     depends_on:
