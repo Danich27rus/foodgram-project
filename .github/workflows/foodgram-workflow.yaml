@@ -105,9 +105,9 @@ jobs:
           script: |
             cd ~
             cd ./code
-            sudo docker rmi sorochinskii/foodgram_project -f
-            sudo docker pull sorochinskii/foodgram_project:latest
-            sudo docker-compose up --force-recreate -d web
+            docker rmi sorochinskii/foodgram_project -f
+            docker pull sorochinskii/foodgram_project:latest
+            docker-compose up --force-recreate -d web
 
   send_message:
     name: Send message
