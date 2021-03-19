@@ -105,6 +105,8 @@ jobs:
           script: |
             cd ~
             cd ./code
+            do
+            docker container prune
             docker rmi sorochinskii/foodgram_project -f
             docker pull sorochinskii/foodgram_project:latest
             docker-compose up --force-recreate -d web
