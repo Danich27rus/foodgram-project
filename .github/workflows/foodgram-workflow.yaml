@@ -91,7 +91,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: './.env, nginx/default.conf, ./docker-compose.yaml'
+          source: './.env, nginx/default.conf, ./docker-compose.yml'
           target: '/home/dev/code'
       -
         name: Executing remote ssh commands to deploy
