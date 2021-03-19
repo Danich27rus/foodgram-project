@@ -44,7 +44,7 @@ function Ingredients() {
                              <input id="valueIngredient_${cur}" name="valueIngredient_${cur}" type="hidden" value="${data.value}">
                              <input id="unitsIngredient_${cur}" name="unitsIngredient_${cur}" type="hidden" value="${data.units}">`;
             cur++;
-            
+
             ingredientsContainer.appendChild(elem);
         }
     };

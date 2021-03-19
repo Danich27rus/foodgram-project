@@ -92,7 +92,7 @@ class FavoriteView(View):
 class PurchaseView(View):
 
     def post(self, request):
-        
+
         json_data = json.loads(request.body.decode())
         recipe_id = json_data['id']
         recipe = get_object_or_404(Recipe, id=recipe_id)

@@ -42,7 +42,7 @@ def new_view(request):
     form = RecipeForm(
         request.POST or None,
         files=request.FILES or None
-        )
+    )
     if form.is_valid():
         recipe = form.save(commit=False)
         recipe.author = request.user
@@ -60,7 +60,7 @@ def new_view(request):
         'tags': tags,
         'form': form,
         'style': styles.get('form')
-        }
+    }
     return render(request, "recipes/formRecipe.html", context)
 
 
@@ -97,7 +97,7 @@ def edit_view(request, recipe_id):
             request.POST or None,
             files=request.FILES or None,
             instance=recipe
-            )
+        )
         if form.is_valid():
             recipe.ingredients.remove()
             recipe.recipe_amount.all().delete()
@@ -153,7 +153,7 @@ class IndexView(View):
             'paginator': paginator,
             'tags': tags,
             'style': styles.get('index')
-            }
+        }
         return render(
             request,
             "recipes/index.html",
@@ -241,16 +241,16 @@ class GetShopList(View):
             filter(recipe__purchase__user=user).
             values('product__title', 'product__dimension').
             annotate(total=Sum('qty'))
-            )
+        )
         filename = f'{user.username}_list.txt'
         products = []
         for ingredient in ingredients:
             products.append(
-                f"{ingredient['product__title']}, " +
-                f"{ingredient['product__dimension']}, " +
-                f"{ingredient['total']}" +
+                f"{ingredient['product__title']}, "
+                f"{ingredient['product__dimension']}, "
+                f"{ingredient['total']}"
                 "\n"
-                )
+            )
         content = ''.join(products)
         response = HttpResponse(content, content_type='txt/plain')
         response["Content-Disposition"] = f"attachment; filename={filename}"

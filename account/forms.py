@@ -18,7 +18,7 @@ class SignupForm(UserCreationForm):
         if (User.objects
                 .exclude(pk=self.instance.pk)
                 .filter(email=email).filter(is_active=True).exists()):
-            raise forms.ValidationError(f"Пользователь c ящиком {email} " +
+            raise forms.ValidationError(f"Пользователь c ящиком {email} "
                                         "уже существует.")
         return email
 
@@ -33,7 +33,7 @@ class SignupForm(UserCreationForm):
 
 
 class ResetForm(PasswordResetForm):
-    help_text = ("Чтобы сбросить старый пароль — введите адрес " +
+    help_text = ("Чтобы сбросить старый пароль — введите адрес "
                  "электронной почты, под которым вы регистрировались.")
     name = "Адрес электронной почты."
     email = forms.EmailField(label=name, max_length=254, required=True,
@@ -78,8 +78,9 @@ class UserPasswordResetForm(SetPasswordForm):
                 'placeholder': 'password',
                 'type': 'password',
                 'id': 'user_password',
-            })
+            }
         )
+    )
 
     new_password2 = forms.CharField(
         label='Confirm password',
@@ -91,5 +92,6 @@ class UserPasswordResetForm(SetPasswordForm):
                 'placeholder': 'confirm password',
                 'type': 'password',
                 'id': 'user_password',
-            })
+            }
         )
+    )
