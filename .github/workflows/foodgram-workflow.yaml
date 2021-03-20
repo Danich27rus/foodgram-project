@@ -52,7 +52,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: sorochinskii/foodgram_project:latest
+          tags: sorochinskii/foodgram:latest
 
   deploy:
     name: Deploy
@@ -107,7 +107,7 @@ jobs:
             cd ./code
             docker rmi sorochinskii/foodgram -f
             docker pull sorochinskii/foodgram:latest
-            docker-compose up --force-recreate -d web
+            docker-compose up --force-recreate -d
 
   send_message:
     name: Send message
