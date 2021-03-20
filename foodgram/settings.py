@@ -37,8 +37,6 @@ else:
         }
     }
 
-SECRET_KEY = 'o0e+a^yu5$e+=(1)hk5l5x#uvh&y*z=%s!%=4&kckd-oga2-_i'
-
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -95,13 +93,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'foodgram.wsgi.application'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': f'django.contrib.auth.password_validation.{name}'}
