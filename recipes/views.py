@@ -82,7 +82,7 @@ def delete_view(request, recipe_id):
 
     recipe = get_object_or_404(Recipe, id=recipe_id)
     recipe.delete()
-    return redirect('index_view')
+    return redirect('index')
 
 
 @login_required
