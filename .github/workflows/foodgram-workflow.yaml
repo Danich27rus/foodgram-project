@@ -107,7 +107,7 @@ jobs:
             cd ./code
             docker rmi sorochinskii/foodgram -f
             docker pull sorochinskii/foodgram:latest
-            docker-compose up --force-recreate -d
+            docker-compose up -d
 
   send_message:
     name: Send message
