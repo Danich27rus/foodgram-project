@@ -26,6 +26,7 @@ services:
     volumes:
       - ./static_volume:/code/files/static/
       - ./media_volume:/code/files/media/
+      - ./.env:/code/.env
     depends_on:
       - db
     env_file:
@@ -47,3 +48,4 @@ volumes:
   postgres_data:
   static_volume:
   media_volume:
+  .env:
