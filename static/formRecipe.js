@@ -5,7 +5,7 @@ const nameIngredient = document.querySelector('#nameIngredient');
 const formDropdownItems = document.querySelector('.form__dropdown-items');
 const cantidadVal = document.querySelector('#cantidadVal');
 const cantidad = document.querySelector('#cantidad')
-const addIng = document.querySelector('#addIng');f
+const addIng = document.querySelector('#addIng');
 
 const api = new Api(apiUrl);
 const header = new Header(counterId);
