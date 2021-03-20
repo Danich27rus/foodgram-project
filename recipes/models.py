@@ -18,7 +18,8 @@ def RandomString(length):
 class Tag(models.Model):
 
     name = models.CharField(max_length=10)
-    color = RGBColorField(colors=['#00ff00', '#ff0000', '#ffff00'])
+    color = RGBColorField(colors=['#00ff00', '#ff0000', '#ffff00'],
+                          max_length=10)
     color_slug = models.SlugField(default='Black')
     slug = models.SlugField(default=RandomString(5))
 
