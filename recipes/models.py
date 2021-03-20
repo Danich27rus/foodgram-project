@@ -33,7 +33,7 @@ class Tag(models.Model):
 
 class Product(models.Model):
 
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=100)
     dimension = models.CharField(max_length=50)
 
     def save(self, *args, **kwargs):

@@ -31,6 +31,7 @@ class Command(BaseCommand):
                 _, created = Tag.objects.get_or_create(
                     name=row[0],
                     color=row[1],
-                    slug=row[2]
+                    color_slug=row[2],
+                    slug=row[3]
                 )
             f.close()
