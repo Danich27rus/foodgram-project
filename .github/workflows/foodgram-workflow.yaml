@@ -83,6 +83,7 @@ jobs:
           SECRET_EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
           SECRET_EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
           SECRET_IP_ADDRESS: ${{ secrets.IP_ADDRESS }}
+          SECRET_SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           python -m pip install --upgrade pip
           pip install dump-env==1.2.0
