@@ -1,4 +1,4 @@
-[![foodgram-project](https://github.com/sorochinskii/foodgram-project/workflows/foodgram-workflow/badge.svg)](https://github.com/sorochinskii/foodgram-project/actions)
+[![foodgram-project](https://github.com/sorochinskii/foodgram-project/workflows/foodgram/badge.svg)](https://github.com/sorochinskii/foodgram-project/actions)
 
 # **Foodgram-project**
 
@@ -16,33 +16,33 @@ Foodgram - онлайн-сервис, где пользователи смогу
 
         git clone https://github.com/sorochinskii/foodgram-project
     
-    Создайте файл .env, содержащий переменные окружения. Необходимые имена переменных
+2.  Создайте файл .env, содержащий переменные окружения. Необходимые имена переменных
     можно взять из файла .env.example
 
-2.  Если пользователь, который использует docker, не root, то добавьте 
+3.  Если пользователь, который использует docker, не root, то добавьте 
     его в группу docker.
 
-3.  Запустите процесс сборки и запуска контейнеров:
+4.  Запустите процесс сборки и запуска контейнеров:
 
         docker-compose up --build
 
-4.  Войдите в контейнер проекта и запустите шелл.
+5.  Войдите в контейнер проекта и запустите шелл.
 
         docker-compose exec web bash
 
-5.  Мигрируйте модели в структуру базы данных
+6.  Мигрируйте модели в структуру базы данных
 
         python manage.py makemigrations
         python manage.py migrate
 
-6.  Создайте пользователя с правами администратора:
+7.  Создайте пользователя с правами администратора:
 
         python manage.py createsuperuser
 
-7.  Добавляем в базу ингредиенты и теги:
+8.  Добавляем в базу ингредиенты и теги:
 
         python manage.py load_fixtures
 
-8.  Запустите сбор статики:
+9.  Запустите сбор статики:
 
         python manage.py collectstatic
