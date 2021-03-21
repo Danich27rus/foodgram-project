@@ -263,6 +263,7 @@ def page_not_found(request, exception):
         {
             'path': request.path,
             'style': styles.get('index'),
+            'title': 'Ошибка 404',
         },
         status=404
     )
@@ -274,6 +275,7 @@ def server_error(request):
         {
             'path': request.path,
             'style': styles.get('index'),
+            'title': 'Ошибка 500',
         },
         status=500
     )
@@ -285,6 +287,7 @@ def permission_denied(request, exception):
         {
             'path': request.path,
             'style': styles.get("index"),
+            'title': 'Ошибка 403',
         },
         status=403
     )

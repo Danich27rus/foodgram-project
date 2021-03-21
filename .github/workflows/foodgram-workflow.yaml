@@ -111,6 +111,7 @@ jobs:
           script: |
             cd ~
             cd ./code
+            docker-compose down
             docker rmi sorochinskii/foodgram -f
             docker pull sorochinskii/foodgram:latest
             docker-compose up -d

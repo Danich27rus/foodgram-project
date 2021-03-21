@@ -1,9 +1,10 @@
 version: '3.8'
 
 volumes:
-  static_volume:
   postgres_data:
+  static_volume:
   media_volume:
+  .env:
 
 services:
   db:
@@ -43,9 +44,3 @@ services:
       - "80:80"
     depends_on:
       - web
-
-volumes:
-  postgres_data:
-  static_volume:
-  media_volume:
-  .env:
