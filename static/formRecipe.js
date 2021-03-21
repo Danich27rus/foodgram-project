@@ -4,7 +4,7 @@ const ingredientsContainer = document.querySelector('.form__field-group-ingredie
 const nameIngredient = document.querySelector('#nameIngredient');
 const formDropdownItems = document.querySelector('.form__dropdown-items');
 const cantidadVal = document.querySelector('#cantidadVal');
-const cantidad = document.querySelector('#cantidad')
+const cantidad = document.querySelector('#cantidad');
 const addIng = document.querySelector('#addIng');
 
 const api = new Api(apiUrl);
@@ -26,7 +26,7 @@ function Ingredients() {
     let cur = defineInitialIndex();
     // клик по элементам с сервера
     const dropdown = (e) => {
-        if (e.target.classList.contains('form__item-list')) {
+        if (e.target.classList.contains('form__item-list')) {``
             nameIngredient.value = e.target.textContent;
             formDropdownItems.style.display = ''
             cantidadVal.textContent = e.target.getAttribute('data-val');
