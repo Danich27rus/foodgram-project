@@ -48,7 +48,7 @@ def new_view(request):
         recipe.author = request.user
         ingredients = form.cleaned_data['ingredients']
         form.cleaned_data['ingredients'] = []
-        recipe.save()
+        form.save()
         Ingredient.objects.bulk_create(
             get_form_ingredients(ingredients, recipe)
         )
