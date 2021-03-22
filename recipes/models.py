@@ -27,7 +27,7 @@ class Tag(models.Model):
         return self.slug
 
     class Meta:
-        unique_together = ('name', 'color', 'slug')
+        unique_together = ('name', 'color', 'color_slug', 'slug')
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
 

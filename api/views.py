@@ -79,7 +79,7 @@ class FavoriteView(View):
     def delete(self, request, recipe_id):
 
         recipe = get_object_or_404(Recipe, id=recipe_id)
-        favorite = Favorite.objects.filter(user=request.user, recipes=recipe)
+        favorite = Favorite.manager.filter(user=request.user, recipes=recipe)
         count, favorites = favorite.delete()
         if count == 0:
             data = {'success': False}

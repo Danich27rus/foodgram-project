@@ -100,7 +100,7 @@ def edit_view(request, recipe_id):
         )
         if form.is_valid():
             recipe.ingredients.remove()
-            recipe.recipe_amount.all().delete()
+            recipe.ingredient.all().delete()
             recipe = form.save(commit=False)
             recipe.author = request.user
             ingredients = form.cleaned_data['ingredients']
