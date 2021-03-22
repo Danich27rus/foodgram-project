@@ -11,7 +11,7 @@ class RecipeForm(forms.ModelForm):
         queryset=Tag.objects.all(),
         widget=forms.CheckboxSelectMultiple(attrs={'class': 'tags__checkbox'}),
         to_field_name='slug',
-        required=False
+        required=True,
     )
     description = forms.CharField(required=True)
 
