@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth import (authenticate, get_user_model, login,
+                                 update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.sites.shortcuts import get_current_site
@@ -14,10 +15,10 @@ from django.views.decorators.http import require_http_methods
 from recipes.models import Recipe, Tag
 
 from .forms import ResetForm, SignupForm, UserPasswordResetForm
-from .models import User
 from .tokens import account_activation_token
 from .utils import styles
 
+User = get_user_model()
 
 @require_http_methods(["GET", "POST"])
 def signup(request):
