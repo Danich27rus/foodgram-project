@@ -33,9 +33,9 @@
                         <div name=tags class="tags">
                             {% for tag in tags %}
                                 <div class="tags__item">
-                                {% comment %} <input type="checkbox" name="{{ tag.slug }}" id="id_{{ tag.slug }}" class="tags__checkbox tags__checkbox_style_{{ tag.color_slug }}"
-                                    {% if tag in checked_tags %} checked> {% else %} > {% endif %} {% endcomment %}
-                                <input type="checkbox" name="tags" value="{{ tag.slug }}" class="tags__checkbox tags__checkbox_style_{{ tag.color_slug }}" id="id_{{ tag.slug }}">
+                                <input type="checkbox" name="tags" id="id_{{ tag.slug }}" value="{{ tag.slug }}" class="tags__checkbox tags__checkbox_style_{{ tag.color_slug }}"
+                                    {% if tag in checked_tags %} checked> {% else %} > {% endif %}
+                                {% comment %} <input type="checkbox" name="tags" value="{{ tag.slug }}" class="tags__checkbox tags__checkbox_style_{{ tag.color_slug }}" id="id_{{ tag.slug }}"> {% endcomment %}
                                 <label name="checkbox_label" for="id_id_tags_0" class="tags__label">{{ tag.name|badge_color:tag.color }}</label>
                                 </div>
                             {% endfor %}
@@ -57,7 +57,7 @@
                         </div>
                         <div class="form__field-group-ingredientes-container">
                             {% for ingredient in recipe.ingredient.all %}
-                                <div class="form__field-item-ingredient" id="ing{{ forloop.counter }}">
+                                <div class="form__field-item-ingredient" id="ing_{{ forloop.counter }}">
                                     <span> {{ ingredient.product.title }} {{ ingredient.qty }} {{ ingredient.product.dimension }} </span>
                                     <span class="form__field-item-delete"></span>
                                     <input id="nameIngredient_{{ forloop.counter }}" name="nameIngredient_{{ forloop.counter }}" type="hidden" value="{{ingredient.product.title}}">

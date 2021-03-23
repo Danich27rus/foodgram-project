@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm,
-                                       UserCreationForm, SetPasswordForm)
-from django.utils.translation import gettext_lazy as _
+                                       SetPasswordForm, UserCreationForm)
 
 User = get_user_model()
 
@@ -15,18 +14,14 @@ class SignupForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if (User.objects
-                .exclude(pk=self.instance.pk)
-                .filter(email=email).filter(is_active=True).exists()):
+        if User.objects.filter(email=email).count():
             raise forms.ValidationError(f"Пользователь c ящиком {email} "
                                         "уже существует.")
         return email
 
     def clean_username(self):
         username = self.cleaned_data['username']
-        if (User.objects
-                .exclude(pk=self.instance.pk)
-                .filter(username=username).exists()):
+        if User.objects.filter(username=username).count():
             raise forms.ValidationError(f"Пользователь {username} "
                                         "уже существует.")
         return username
@@ -35,21 +30,12 @@ class SignupForm(UserCreationForm):
 class ResetForm(PasswordResetForm):
     help_text = ("Чтобы сбросить старый пароль — введите адрес "
                  "электронной почты, под которым вы регистрировались.")
-    name = "Адрес электронной почты."
+    name = "Адрес электронной почты:"
     email = forms.EmailField(label=name, max_length=254, required=True,
                              help_text=help_text)
 
 
 class SigninForm(AuthenticationForm):
-
-    error_messages = {
-        'required': "Это поле необходимо заполнить.",
-        'invalid_login': _(
-            "Имя и пароль не совпадают. Введите "
-            "правильные данные."
-        ),
-        'inactive': "Этот аккаунт не активен.",
-    }
 
     class Meta:
 
@@ -58,7 +44,7 @@ class SigninForm(AuthenticationForm):
 
         error_messages = {
             'required': "Это поле необходимо заполнить.",
-            'invalid_login': _(
+            'invalid_login': (
                 "Имя и пароль не совпадают. Введите "
                 "правильные данные."
             ),

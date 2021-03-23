@@ -45,7 +45,7 @@ def signup(request):
             )
             email.send()
             msg_confirm = ("Инструкция по активации была отправлена на ящик "
-                           f"{to_email}.")
+                           f"{to_email}")
             return render(
                 request,
                 "account/signin.html",

@@ -148,10 +148,6 @@ EMAIL_PORT = os.environ.get('EMAIL_PORT')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-AUTHENTICATION_BACKENDS = [
-    'account.backends.CustomModelBackend',
-]
-
 LOGIN_URL = '/account/signin/'
 
 LOGIN_REDIRECT_URL = 'index'
