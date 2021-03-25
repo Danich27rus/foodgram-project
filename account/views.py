@@ -27,9 +27,7 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             to_email = form.cleaned_data.get('email')
-            user = form.save(commit=False)
-            user.is_active = False
-            user.save()
+            user = form.save()
             current_site = get_current_site(request)
             mail_subject = "Активируйте Ваш foodgram аккаунт."
             message = render_to_string(

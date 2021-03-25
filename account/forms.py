@@ -26,6 +26,13 @@ class SignupForm(UserCreationForm):
                                         "уже существует.")
         return username
 
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_active = False
+        if commit:
+            user.save()
+        return user
+
 
 class ResetForm(PasswordResetForm):
     help_text = ("Чтобы сбросить старый пароль — введите адрес "
