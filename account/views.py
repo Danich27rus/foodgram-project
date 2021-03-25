@@ -12,18 +12,17 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import View
 from django.views.decorators.http import require_http_methods
+
 from recipes.models import Recipe, Tag
 
 from .forms import ResetForm, SignupForm, UserPasswordResetForm
 from .tokens import account_activation_token
-from .utils import styles
 
 User = get_user_model()
 
 @require_http_methods(["GET", "POST"])
 def signup(request):
 
-    style = styles.get('form')
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
@@ -50,18 +49,16 @@ def signup(request):
             return render(
                 request,
                 "account/signin.html",
-                {'msg': msg_confirm, 'style': style}
+                {'msg': msg_confirm}
             )
     else:
         form = SignupForm()
-    return render(request, "account/signup.html",
-                  {'form': form, 'style': style})
+    return render(request, "account/signup.html", {'form': form})
 
 
 @require_http_methods(["GET", "POST"])
 def signin(request):
 
-    style = styles.get('form')
     if request.user.is_authenticated:
         return redirect('index')
     if request.method == 'POST':
@@ -73,21 +70,13 @@ def signin(request):
             if user.is_active:
                 login(request, user)
                 return redirect('index')
-            else:
-                return render(request, "account/signin.html",
-                              {'form': form, 'style': style})
-        else:
-            return render(request, "account/signin.html",
-                          {'form': form, 'style': style})
     else:
         form = AuthenticationForm()
-    return render(request, "account/signin.html",
-                  {'form': form, 'style': style})
+    return render(request, "account/signin.html", {'form': form})
 
 
 def activate(request, uidb64, token):
 
-    style = styles.get('form')
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -99,17 +88,11 @@ def activate(request, uidb64, token):
         login(request, user)
         msg_success = "Успешная активация аккаунта."
         return render(
-            request,
-            "account/signup.html",
-            {'msg': msg_success, 'style': style}
+            request, "account/signup.html", {'msg': msg_success}
         )
     else:
         msg_failed = "Ссылка не действительна."
-        return render(
-            request,
-            "account/signup.html",
-            {'msg': msg_failed, 'style': style}
-        )
+        return render(request, "account/signup.html", {'msg': msg_failed})
 
 
 @login_required
@@ -129,15 +112,13 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     return render(
         request, 'account/password/change.html',
-        {'form': form, 'title': 'Изменение пароля',
-         'style': styles.get('form')}
+        {'form': form, 'title': 'Изменение пароля'}
     )
 
 
 @require_http_methods(["GET", "POST"])
 def reset_password(request):
 
-    style = styles.get('form')
     msg = ''
     if request.method == 'POST':
         form = ResetForm(request.POST)
@@ -162,20 +143,19 @@ def reset_password(request):
                 email.send()
                 msg = "Сообщение отправлено. Проверьте почтовый ящик."
                 return render(request, "account/signin.html",
-                              {'form': form, 'msg': msg, 'style': style})
+                              {'form': form, 'msg': msg})
             else:
                 msg = "Почтовый ящик не найден."
         else:
             return render(request, "account/signin.html",
-                          {'form': form, 'msg': msg, 'style': style})
+                          {'form': form, 'msg': msg})
     return render(request, "account/password/resetPassword.html",
-                  {'form': ResetForm, 'msg': msg, 'style': style})
+                  {'form': ResetForm, 'msg': msg})
 
 
 @require_http_methods(["GET", "POST"])
 def reset_confirm(request, uidb64, token):
 
-    style = styles.get('form')
     if request.method == 'POST':
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
@@ -193,7 +173,7 @@ def reset_confirm(request, uidb64, token):
             else:
                 msg = "Пароль не может быть сброшен."
                 return render(request, "account/signin.html",
-                              {'form': form, 'msg': msg, 'style': style})
+                              {'form': form, 'msg': msg})
         else:
             msg = "Неверная ссылка. Пожалуйста, запросите новый сброс пароля."
     try:
@@ -205,15 +185,14 @@ def reset_confirm(request, uidb64, token):
         return render(request, 'account/password/resetPasswordConfirm.html', {
             'form': UserPasswordResetForm(user),
             'uid': uidb64,
-            'token': token,
-            'style': style}
+            'token': token}
         )
     else:
         msg = "Неверная ссылка. Пожалуйста, запросите новый сброс пароля."
         return render(request, "account/password/resetPassword.html",
-                      {'form': ResetForm, 'msg': msg, 'style': style})
+                      {'form': ResetForm, 'msg': msg})
     return render(request, "account/signin.html",
-                  {'form': form, 'msg': msg, 'style': style})
+                  {'form': form, 'msg': msg})
 
 
 class ProfileView(View):
@@ -240,7 +219,6 @@ class ProfileView(View):
         context = {'author': author,
                    'page': page,
                    'paginator': paginator,
-                   'style': styles.get('index'),
                    'tags': tags,
                    }
         return render(request, "recipes/profile.html", context)

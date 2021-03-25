@@ -23,7 +23,8 @@ def get_values(value):
 
 @register.filter
 def badge_color(text, color):
-    safe_text = '<span style="color:{color}">{text}</span>'.format(color=color, text=text)
+    safe_text = ('<span style="color:{color}">{text}</span>'
+                 .format(color=color, text=text))
     return mark_safe(safe_text)
 
 

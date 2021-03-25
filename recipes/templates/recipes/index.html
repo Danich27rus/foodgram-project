@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block title %} {{ page_title }} {% endblock %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock %}
 {% block content %}
     {% load static recipes_filters %}
     <main class="main container">

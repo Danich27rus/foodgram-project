@@ -2,7 +2,10 @@
 {% load thumbnail %}
 {% load static %}
 {% block title %}{{ page_title }}{% endblock %}
-
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pages/single.css' %}">
+{% endblock %}
 {% block content %}
 {% csrf_token %}
     <main class="main container">

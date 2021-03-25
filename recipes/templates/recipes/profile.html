@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Рецепты{% endblock %}
 {% load recipes_filters %}
-
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock %}
 {% block content %}
 {% csrf_token %}
     <main class="main container">
