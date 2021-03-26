@@ -23,34 +23,31 @@ User = get_user_model()
 @require_http_methods(["GET", "POST"])
 def signup(request):
 
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            to_email = form.cleaned_data.get('email')
-            user = form.save()
-            current_site = get_current_site(request)
-            mail_subject = "Активируйте Ваш foodgram аккаунт."
-            message = render_to_string(
-                "account/password/activateEmail.html", {
-                    'user': user,
-                    'domain': current_site.domain,
-                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token': account_activation_token.make_token(user),
-                }
-            )
-            email = EmailMessage(
-                mail_subject, message, to=[to_email]
-            )
-            email.send()
-            msg_confirm = ("Инструкция по активации была отправлена на ящик "
-                           f"{to_email}")
-            return render(
-                request,
-                "account/signin.html",
-                {'msg': msg_confirm}
-            )
-    else:
-        form = SignupForm()
+    form = SignupForm(request.POST or None)
+    if form.is_valid():
+        to_email = form.cleaned_data.get('email')
+        user = form.save()
+        current_site = get_current_site(request)
+        mail_subject = "Активируйте Ваш foodgram аккаунт."
+        message = render_to_string(
+            "account/password/activateEmail.html", {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            }
+        )
+        email = EmailMessage(
+            mail_subject, message, to=[to_email]
+        )
+        email.send()
+        msg_confirm = ("Инструкция по активации была отправлена на ящик "
+                        f"{to_email}")
+        return render(
+            request,
+            "account/signin.html",
+            {'msg': msg_confirm}
+        )
     return render(request, "account/signup.html", {'form': form})
 
 
@@ -59,17 +56,14 @@ def signin(request):
 
     if request.user.is_authenticated:
         return redirect('index')
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user.is_active:
-                login(request, user)
-                return redirect('index')
-    else:
-        form = AuthenticationForm()
+    form = AuthenticationForm(request.POST or None)
+    if form.is_valid():
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        if user.is_active:
+            login(request, user)
+            return redirect('index')
     return render(request, "account/signin.html", {'form': form})
 
 
@@ -96,18 +90,15 @@ def activate(request, uidb64, token):
 @login_required
 def change_password(request):
 
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)
-            messages.success(
-                request, "Ваш пароль успешно изменен!")
-            return redirect('signin')
-        else:
-            messages.error(request, "Пожалуйста, исправьте ошибки.")
+    form = PasswordChangeForm(request.POST or None)
+    if form.is_valid():
+        user = form.save()
+        update_session_auth_hash(request, user)
+        messages.success(
+            request, "Ваш пароль успешно изменен!")
+        return redirect('signin')
     else:
-        form = PasswordChangeForm(request.user)
+        messages.error(request, "Пожалуйста, исправьте ошибки.")
     return render(
         request, 'account/password/change.html',
         {'form': form, 'title': 'Изменение пароля'}
