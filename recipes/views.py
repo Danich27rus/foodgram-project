@@ -10,29 +10,11 @@ from django.views import View
 from django.views.decorators.http import require_http_methods
 
 from .forms import RecipeForm
-from .models import (Favorite, Follow, Ingredient, Product, Purchase, Recipe,
-                     Tag)
+from .models import Favorite, Follow, Ingredient, Purchase, Recipe, Tag
 from .utils import styles
 
+
 User = get_user_model()
-
-
-def get_form_ingredients(ingredients, recipe):
-
-    result = list()
-    for ingredient in ingredients:
-        product = Product.objects.get(
-            title=ingredient['title'],
-            dimension=ingredient['unit']
-        )
-        result.append(
-            Ingredient(
-                recipe=recipe,
-                product=product,
-                qty=ingredient['qty'],
-            )
-        )
-    return result
 
 
 @login_required
@@ -44,14 +26,7 @@ def new_view(request):
         files=request.FILES or None
     )
     if form.is_valid():
-        recipe = form.save(commit=False)
-        recipe.author = request.user
-        ingredients = form.cleaned_data['ingredients']
-        form.cleaned_data['ingredients'] = []
-        form.save()
-        Ingredient.objects.bulk_create(
-            get_form_ingredients(ingredients, recipe)
-        )
+        form.save(author=request.user)
         return redirect('index')
     tags = Tag.objects.all()
     context = {
@@ -101,14 +76,7 @@ def edit_view(request, recipe_id):
         if form.is_valid():
             recipe.ingredients.remove()
             recipe.ingredient.all().delete()
-            recipe = form.save(commit=False)
-            recipe.author = request.user
-            ingredients = form.cleaned_data['ingredients']
-            form.cleaned_data['ingredients'] = []
-            form.save()
-            Ingredient.objects.bulk_create(
-                get_form_ingredients(ingredients, recipe)
-            )
+            form.save(author=request.user)
             return redirect('recipe_view', recipe_id=recipe_id)
     form = RecipeForm(instance=recipe)
     tags = Tag.objects.all()
@@ -122,7 +90,6 @@ def edit_view(request, recipe_id):
         'form': form,
         'recipe': recipe,
         'edit': True,
-        'style': styles.get('form')
     }
     return render(request, "recipes/formRecipe.html", context)
 

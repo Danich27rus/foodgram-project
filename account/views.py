@@ -154,26 +154,26 @@ def reset_password(request):
 @require_http_methods(["GET", "POST"])
 def reset_confirm(request, uidb64, token):
 
-    if request.method == 'POST':
-        try:
-            uid = force_text(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(pk=uid)
-        except User.DoesNotExist:
-            user = None
-        if user is not None and account_activation_token.check_token(user, token):
-            form = UserPasswordResetForm(user=user, data=request.POST)
-            if form.is_valid():
-                form.save()
-                update_session_auth_hash(request, form.user)
-                user.is_active = True
-                user.save()
-                return redirect('index')
-            else:
-                msg = "Пароль не может быть сброшен."
-                return render(request, "account/signin.html",
-                              {'form': form, 'msg': msg})
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except User.DoesNotExist:
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        # form = UserPasswordResetForm(user=user, data=request.POST)
+        form = UserPasswordResetForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            user.is_active = True
+            user.save()
+            return redirect('index')
         else:
-            msg = "Неверная ссылка. Пожалуйста, запросите новый сброс пароля."
+            msg = "Пароль не может быть сброшен."
+            return render(request, "account/signin.html",
+                          {'form': form, 'msg': msg})
+    else:
+        msg = "Неверная ссылка. Пожалуйста, запросите новый сброс пароля."
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)

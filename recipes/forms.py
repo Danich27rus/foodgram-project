@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import Tag, Recipe, Product
+
+from .models import Product, Recipe, Tag, Ingredient
+from .utils import get_form_ingredients
 
 User = get_user_model()
 
@@ -86,3 +88,14 @@ class RecipeForm(forms.ModelForm):
         if len(data) == 0:
             raise forms.ValidationError("Добавьте тег")
         return data
+
+    def save(self, author=None):
+        recipe = super().save(commit=False)
+        recipe.author = author
+        ingredients = self.cleaned_data['ingredients']
+        self.cleaned_data['ingredients'] = []
+        recipe = super().save()
+        Ingredient.objects.bulk_create(
+            get_form_ingredients(ingredients, recipe)
+        )
+        return recipe

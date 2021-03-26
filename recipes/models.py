@@ -99,7 +99,7 @@ class Ingredient(models.Model):
     qty = models.PositiveIntegerField()
 
     def __str__(self):
-        return f'{self.recipe} - {self.qty}'
+        return f'{self.recipe} - {self.product} - {self.qty}'
 
     class Meta:
         ordering = ('product', )
