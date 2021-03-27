@@ -67,17 +67,16 @@ def edit_view(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     if request.user != recipe.author:
         return redirect('recipe_view', recipe_id=recipe_id)
-    if request.method == 'POST':
-        form = RecipeForm(
-            request.POST or None,
-            files=request.FILES or None,
-            instance=recipe
-        )
-        if form.is_valid():
-            recipe.ingredients.remove()
-            recipe.ingredient.all().delete()
-            form.save(author=request.user)
-            return redirect('recipe_view', recipe_id=recipe_id)
+    form = RecipeForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=recipe
+    )
+    if form.is_valid():
+        recipe.ingredients.remove()
+        recipe.ingredient.all().delete()
+        form.save(author=request.user)
+        return redirect('recipe_view', recipe_id=recipe_id)
     form = RecipeForm(instance=recipe)
     tags = Tag.objects.all()
     checked_tags = recipe.tags.all()

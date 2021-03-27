@@ -19,7 +19,9 @@
                 <div class="form__field-group">
                     <input type="password" name="{{ form.old_password.name }}" id="id_old_password" class="form__input">
                     <span class="form__error">
-                        {{ form.old_password.errors }}
+                    {% if form.old_password.errors %}
+                        {{ form.error_messages.password_incorrect }}
+                    {% endif %}
                     </span>
                 </div>
             </div>
@@ -43,7 +45,9 @@
                 <div class="form__field-group">
                     <input type="password" name="{{ form.new_password2.name }}" id="id_new_password2" class="form__input">
                     <span class="form__error">
-                        {{ form.new_password2.errors }}
+                    {% if form.old_password.errors %}
+                        {{ form.error_messages.password_mismatch }}
+                    {% endif %}
                     </span>
                 </div>
             </div>

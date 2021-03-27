@@ -56,7 +56,7 @@ def signin(request):
 
     if request.user.is_authenticated:
         return redirect('index')
-    form = AuthenticationForm(request.POST or None)
+    form = AuthenticationForm(request.user or None, request.POST or None)
     if form.is_valid():
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
@@ -90,15 +90,11 @@ def activate(request, uidb64, token):
 @login_required
 def change_password(request):
 
-    form = PasswordChangeForm(request.POST or None)
+    form = PasswordChangeForm(request.user or None, request.POST or None)
     if form.is_valid():
         user = form.save()
         update_session_auth_hash(request, user)
-        messages.success(
-            request, "Ваш пароль успешно изменен!")
         return redirect('signin')
-    else:
-        messages.error(request, "Пожалуйста, исправьте ошибки.")
     return render(
         request, 'account/password/change.html',
         {'form': form, 'title': 'Изменение пароля'}
@@ -109,37 +105,36 @@ def change_password(request):
 def reset_password(request):
 
     msg = ''
-    if request.method == 'POST':
-        form = ResetForm(request.POST)
-        if form.is_valid():
-            to_email = form.cleaned_data.get('email')
-            qs = list(form.get_users(to_email))
-            if len(qs):
-                user = qs[0]
-                user.is_active = False
-                user.save()
-                site = get_current_site(request)
-                mail_subject = "Сброс пароля foodgram аккаунта."
-                message = render_to_string(
-                    "account/password/resetEmail.html", {
-                        'user': user,
-                        'protocol': 'http',
-                        'domain': site.domain,
-                        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                        'token': account_activation_token.make_token(user),
-                    })
-                email = EmailMessage(mail_subject, message, to=[to_email])
-                email.send()
-                msg = "Сообщение отправлено. Проверьте почтовый ящик."
-                return render(request, "account/signin.html",
-                              {'form': form, 'msg': msg})
-            else:
-                msg = "Почтовый ящик не найден."
-        else:
+    form = ResetForm(request.POST or None)
+    if form.is_valid():
+        to_email = form.cleaned_data.get('email')
+        qs = list(form.get_users(to_email))
+        if len(qs):
+            user = qs[0]
+            user.is_active = False
+            user.save()
+            site = get_current_site(request)
+            mail_subject = "Сброс пароля foodgram аккаунта."
+            message = render_to_string(
+                "account/password/resetEmail.html", {
+                    'user': user,
+                    'protocol': 'http',
+                    'domain': site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                })
+            email = EmailMessage(mail_subject, message, to=[to_email])
+            email.send()
+            msg = "Сообщение отправлено. Проверьте почтовый ящик."
             return render(request, "account/signin.html",
-                          {'form': form, 'msg': msg})
-    return render(request, "account/password/resetPassword.html",
-                  {'form': ResetForm, 'msg': msg})
+                            {'form': form, 'msg': msg})
+        else:
+            msg = "Почтовый ящик не найден."
+    else:
+            return render(request, "account/password/resetPassword.html",
+                            {'form': ResetForm, 'msg': msg})
+    return render(request, "account/signin.html",
+                    {'form': form, 'msg': msg})
 
 
 @require_http_methods(["GET", "POST"])
@@ -150,38 +145,18 @@ def reset_confirm(request, uidb64, token):
         user = User.objects.get(pk=uid)
     except User.DoesNotExist:
         user = None
-    if user is not None and account_activation_token.check_token(user, token):
-        # form = UserPasswordResetForm(user=user, data=request.POST)
-        form = UserPasswordResetForm(request.POST or None)
-        if form.is_valid():
-            form.save()
-            update_session_auth_hash(request, form.user)
+    form = UserPasswordResetForm(user or None, request.POST or None)
+    if form.is_valid():
+        if user is not None and account_activation_token.check_token(user, token):
+            update_session_auth_hash(request, request.user)
             user.is_active = True
             user.save()
-            return redirect('index')
-        else:
-            msg = "Пароль не может быть сброшен."
-            return render(request, "account/signin.html",
-                          {'form': form, 'msg': msg})
+            msg = "Сброс завершен."
+            return render(request, "account/signin.html", {'msg': msg})
     else:
-        msg = "Неверная ссылка. Пожалуйста, запросите новый сброс пароля."
-    try:
-        uid = force_text(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except User.DoesNotExist:
-        user = None
-    if user is not None and account_activation_token.check_token(user, token):
-        return render(request, 'account/password/resetPasswordConfirm.html', {
-            'form': UserPasswordResetForm(user),
-            'uid': uidb64,
-            'token': token}
+        return render(request, 'account/password/resetPasswordConfirm.html',
+                      {'form': form}
         )
-    else:
-        msg = "Неверная ссылка. Пожалуйста, запросите новый сброс пароля."
-        return render(request, "account/password/resetPassword.html",
-                      {'form': ResetForm, 'msg': msg})
-    return render(request, "account/signin.html",
-                  {'form': form, 'msg': msg})
 
 
 class ProfileView(View):
