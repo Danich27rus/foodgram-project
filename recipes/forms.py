@@ -46,14 +46,14 @@ class RecipeForm(forms.ModelForm):
             for key in self.data
             if key.startswith('unitsIngredient_')
         ]
-        ingredient_qtys = [
+        ingredient_quantities = [
             self.data[key]
             for key in self.data
             if key.startswith('valueIngredient_')
         ]
         ingredients_clean = []
         for ingredient in zip(ingredient_names, ingredient_units,
-                              ingredient_qtys):
+                              ingredient_quantities):
             if not int(ingredient[2]) > 0:
                 raise forms.ValidationError("Количество ингредиентов должно "
                                             "быть больше нуля.")
@@ -63,31 +63,10 @@ class RecipeForm(forms.ModelForm):
             else:
                 ingredients_clean.append({'title': ingredient[0],
                                           'unit': ingredient[1],
-                                          'qty': ingredient[2]})
+                                          'quantity': ingredient[2]})
         if len(ingredients_clean) == 0:
             raise forms.ValidationError("Добавьте ингредиент")
         return ingredients_clean
-
-    def clean_title(self):
-
-        data = self.cleaned_data['title']
-        if len(data) == 0:
-            raise forms.ValidationError("Добавьте название рецепта")
-        return data
-
-    def clean_description(self):
-
-        data = self.cleaned_data['description']
-        if len(data) == 0:
-            raise forms.ValidationError("Добавьте описание рецепта")
-        return data
-
-    def clean_tags(self):
-
-        data = self.cleaned_data['tags']
-        if len(data) == 0:
-            raise forms.ValidationError("Добавьте тег")
-        return data
 
     def save(self, author=None):
         recipe = super().save(commit=False)

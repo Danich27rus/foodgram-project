@@ -3,7 +3,6 @@ from urllib.parse import unquote
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -33,13 +32,11 @@ class FollowTo(View):
 
         json_data = json.loads(request.body.decode())
         author = get_object_or_404(User, id=json_data['id'])
-        is_exist = Follow.objects.filter(
-            follower=request.user, author=author).exists()
         data = {'success': True}
-        if is_exist:
+        obj, created = Follow.objects.get_or_create(follower=request.user,
+                                                    author=author)
+        if not created:
             data['success'] = False
-        else:
-            Follow.objects.create(follower=request.user, author=author)
         return JsonResponse(data)
 
 
@@ -49,8 +46,7 @@ class FollowDelete(View):
     def delete(self, request, author_id):
 
         author = get_object_or_404(User, id=author_id)
-        follow = Follow.objects.filter(follower=request.user,
-                                       author=author)
+        follow = author.followed.filter(follower=request.user)
         quantity, obj_subscription = follow.delete()
         if quantity == 0:
             data = {'success': False}
@@ -111,7 +107,7 @@ class PurchaseView(View):
         data = {'success': True}
         try:
             purchase = Purchase.manager.get(user=request.user)
-        except ObjectDoesNotExist:
+        except Purchase.DoesNotExist:
             data['success'] = False
         if not purchase.recipes.filter(id=recipe_id).exists():
             data['success'] = False

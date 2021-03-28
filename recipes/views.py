@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.http import HttpResponse
@@ -11,8 +10,6 @@ from django.views.decorators.http import require_http_methods
 
 from .forms import RecipeForm
 from .models import Favorite, Follow, Ingredient, Purchase, Recipe, Tag
-from .utils import styles
-
 
 User = get_user_model()
 
@@ -34,7 +31,6 @@ def new_view(request):
         'button': 'Создать рецепт',
         'tags': tags,
         'form': form,
-        'style': styles.get('form')
     }
     return render(request, "recipes/formRecipe.html", context)
 
@@ -46,7 +42,6 @@ def recipe_view(request, recipe_id):
     context = {
         'page_title': recipe.title,
         'recipe': recipe,
-        'style': styles.get('single')
     }
     return render(request, "recipes/singlePage.html", context)
 
@@ -118,7 +113,6 @@ class IndexView(View):
             'page': page,
             'paginator': paginator,
             'tags': tags,
-            'style': styles.get('index')
         }
         return render(
             request,
@@ -142,7 +136,6 @@ class Follows(View):
             'active': 'subscription',
             'paginator': paginator,
             'page': page,
-            'style': styles.get('follow'),
         }
         return render(request, "recipes/myFollow.html", context)
 
@@ -159,7 +152,7 @@ class FavoritesView(View):
             else:
                 recipes = Favorite.manager.get(user=user).recipes.filter(
                     tags__slug__in=tags)
-        except ObjectDoesNotExist:
+        except Recipe.DoesNotExist:
             return []
         return recipes
 
@@ -176,7 +169,6 @@ class FavoritesView(View):
             'page': page,
             'paginator': paginator,
             'tags': tags,
-            'style': styles.get('index'),
         }
         return render(request, "recipes/index.html", context)
 
@@ -191,7 +183,6 @@ class PurchaseView(View):
             'page_title': 'Список покупок',
             'recipes': recipes,
             'active': 'purchase',
-            'style': styles.get('shoplist'),
         }
         return render(request, "recipes/shopList.html", context)
 
@@ -206,7 +197,7 @@ class GetShopList(View):
             Ingredient.objects.select_related('product').
             filter(recipe__purchase__user=user).
             values('product__title', 'product__dimension').
-            annotate(total=Sum('qty'))
+            annotate(total=Sum('quantity'))
         )
         filename = f'{user.username}_list.txt'
         products = []
@@ -221,39 +212,3 @@ class GetShopList(View):
         response = HttpResponse(content, content_type='txt/plain')
         response["Content-Disposition"] = f"attachment; filename={filename}"
         return response
-
-
-def page_not_found(request, exception):
-    return render(
-        request, '404.html',
-        {
-            'path': request.path,
-            'style': styles.get('index'),
-            'title': 'Ошибка 404',
-        },
-        status=404
-    )
-
-
-def server_error(request):
-    return render(
-        request, '500.html',
-        {
-            'path': request.path,
-            'style': styles.get('index'),
-            'title': 'Ошибка 500',
-        },
-        status=500
-    )
-
-
-def permission_denied(request, exception):
-    return render(
-        request, '403.html',
-        {
-            'path': request.path,
-            'style': styles.get("index"),
-            'title': 'Ошибка 403',
-        },
-        status=403
-    )

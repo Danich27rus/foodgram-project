@@ -1,5 +1,4 @@
 from django import template
-from django.core.exceptions import ObjectDoesNotExist
 from django.utils.safestring import mark_safe
 from recipes.models import Favorite, Follow, Purchase
 
@@ -8,7 +7,7 @@ register = template.Library()
 
 @register.filter
 def subscribed(author, follower):
-    return Follow.objects.filter(follower=follower, author=author).exists()
+    return Follow.objects.filter(follower=follower).exists()
 
 
 @register.filter
@@ -53,5 +52,5 @@ def purchased(recipe, user):
 def purchase_count(user):
     try:
         return Purchase.manager.get(user=user).recipes.count()
-    except ObjectDoesNotExist:
+    except Purchase.DoesNotExist:
         return 0
