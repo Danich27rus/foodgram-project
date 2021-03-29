@@ -12,20 +12,23 @@ class Tag(models.Model):
 
     name = models.CharField(max_length=10,
                             verbose_name="имя")
+
     color = RGBColorField(colors=["#00ff00", "#ff0000", "#ffff00"],
                           max_length=10, verbose_name="цвет тэга")
+
     color_slug = models.SlugField(default="Black",
                                   verbose_name="слаг цвета")
+
     slug = models.SlugField(default=random_string(5),
                             verbose_name="слаг тэга")
-
-    def __str__(self):
-        return self.slug
 
     class Meta:
         unique_together = ("name", "color", "color_slug", "slug")
         verbose_name = "тэг"
         verbose_name_plural = "тэги"
+
+    def __str__(self):
+        return self.slug
 
 
 class Product(models.Model):
@@ -40,17 +43,17 @@ class Product(models.Model):
         verbose_name="единица"
     )
 
-    def save(self, *args, **kwargs):
-        self.title = self.title.lower()
-        return super(Product, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.title} - {self.dimension}"
-
     class Meta:
         ordering = ("title", )
         verbose_name = "продукт"
         verbose_name_plural = "продукты"
+
+    def __str__(self):
+        return f"{self.title} - {self.dimension}"
+
+    def save(self, *args, **kwargs):
+        self.title = self.title.lower()
+        return super().save()
 
 
 class Recipe(models.Model):
@@ -109,14 +112,14 @@ class Ingredient(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name="ingredient",
+        related_name="ingredients",
         verbose_name="рецепт"
     )
 
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        related_name="ingredient",
+        related_name="ingredients",
         verbose_name="продукт"
     )
 
@@ -159,7 +162,8 @@ class Favorite(models.Model):
 
     class Meta:
         ordering = ("user", )
-        verbose_name = "Избранное"
+        verbose_name = "избранное"
+        verbose_plural = "избранные"
 
 
 class Follow(models.Model):
@@ -177,12 +181,12 @@ class Follow(models.Model):
         verbose_name="автор"
     )
 
-    def __str__(self):
-        return f"Последователь: {self.follower}, автор: {self.author}"
-
     class Meta:
         ordering = ("follower", )
-        verbose_name = "Подписки"
+        verbose_name = "подписки"
+
+    def __str__(self):
+        return f"Последователь: {self.follower}, автор: {self.author}"
 
 
 class PurchaseManager(models.Manager):
@@ -205,13 +209,14 @@ class Purchase(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="purchases"
+        related_name="purchases",
+        verbose_name="пользователь"
     )
 
-    recipes = models.ManyToManyField(Recipe)
+    recipes = models.ManyToManyField(Recipe, verbose_name="рецепты")
 
     manager = PurchaseManager()
 
     class Meta:
-        verbose_name = "Покупка"
-        verbose_name_plural = "Покупки"
+        verbose_name = "покупка"
+        verbose_name_plural = "покупки"

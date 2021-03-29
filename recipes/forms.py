@@ -15,13 +15,17 @@ class RecipeForm(forms.ModelForm):
         to_field_name='slug',
         required=True,
     )
+
     description = forms.CharField(required=True)
 
     class Meta:
+
         model = Recipe
+
         fields = (
             'title', 'description', 'ingredients',
             'duration', 'pic', 'tags')
+
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form__input'}),
             'description': forms.Textarea(
@@ -30,6 +34,7 @@ class RecipeForm(forms.ModelForm):
                 attrs={'class': 'form__input', 'id': 'id_time',
                        'name': 'time'}),
         }
+
         labels = {
             'image': 'Загрузить фото'
         }
@@ -41,17 +46,21 @@ class RecipeForm(forms.ModelForm):
             for key in self.data
             if key.startswith('nameIngredient_')
         ]
+
         ingredient_units = [
             self.data[key]
             for key in self.data
             if key.startswith('unitsIngredient_')
         ]
+
         ingredient_quantities = [
             self.data[key]
             for key in self.data
             if key.startswith('valueIngredient_')
         ]
+
         ingredients_clean = []
+
         for ingredient in zip(ingredient_names, ingredient_units,
                               ingredient_quantities):
             if not int(ingredient[2]) > 0:
@@ -64,6 +73,7 @@ class RecipeForm(forms.ModelForm):
                 ingredients_clean.append({'title': ingredient[0],
                                           'unit': ingredient[1],
                                           'quantity': ingredient[2]})
+
         if len(ingredients_clean) == 0:
             raise forms.ValidationError("Добавьте ингредиент")
         return ingredients_clean

@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.contrib.auth import (authenticate, get_user_model, login,
                                  update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
@@ -131,8 +130,8 @@ def reset_password(request):
         else:
             msg = "Почтовый ящик не найден."
     else:
-            return render(request, "account/password/resetPassword.html",
-                            {'form': ResetForm, 'msg': msg})
+        return render(request, "account/password/resetPassword.html",
+                        {'form': ResetForm, 'msg': msg})
     return render(request, "account/signin.html",
                     {'form': form, 'msg': msg})
 

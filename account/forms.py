@@ -35,9 +35,12 @@ class SignupForm(UserCreationForm):
 
 
 class ResetForm(PasswordResetForm):
+
     help_text = ("Чтобы сбросить старый пароль — введите адрес "
                  "электронной почты, под которым вы регистрировались.")
+
     name = "Адрес электронной почты:"
+
     email = forms.EmailField(label=name, max_length=254, required=True,
                              help_text=help_text)
 
