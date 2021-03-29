@@ -50,6 +50,7 @@ def purchased(recipe, user):
 
 @register.filter
 def purchase_count(user):
+
     try:
         return Purchase.manager.get(user=user).recipes.count()
     except Purchase.DoesNotExist:

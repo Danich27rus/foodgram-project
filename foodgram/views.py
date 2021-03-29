@@ -3,10 +3,10 @@ from django.shortcuts import render
 
 def page_not_found(request, exception):
     return render(
-        request, '404.html',
+        request, "404.html",
         {
-            'path': request.path,
-            'title': 'Ошибка 404',
+            "path": request.path,
+            "title": "Ошибка 404",
         },
         status=404
     )
@@ -14,10 +14,10 @@ def page_not_found(request, exception):
 
 def server_error(request):
     return render(
-        request, '500.html',
+        request, "500.html",
         {
-            'path': request.path,
-            'title': 'Ошибка 500',
+            "path": request.path,
+            "title": "Ошибка 500",
         },
         status=500
     )
@@ -25,10 +25,10 @@ def server_error(request):
 
 def permission_denied(request, exception):
     return render(
-        request, '403.html',
+        request, "403.html",
         {
-            'path': request.path,
-            'title': 'Ошибка 403',
+            "path": request.path,
+            "title": "Ошибка 403",
         },
         status=403
     )

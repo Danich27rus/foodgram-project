@@ -11,8 +11,8 @@ class RecipeForm(forms.ModelForm):
 
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
-        widget=forms.CheckboxSelectMultiple(attrs={'class': 'tags__checkbox'}),
-        to_field_name='slug',
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "tags__checkbox"}),
+        to_field_name="slug",
         required=True,
     )
 
@@ -23,20 +23,20 @@ class RecipeForm(forms.ModelForm):
         model = Recipe
 
         fields = (
-            'title', 'description', 'ingredients',
-            'duration', 'pic', 'tags')
+            "title", "description", "ingredients",
+            "duration", "pic", "tags")
 
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form__input'}),
-            'description': forms.Textarea(
-                attrs={'class': 'form__textarea', 'rows': '8'}),
-            'duration': forms.NumberInput(
-                attrs={'class': 'form__input', 'id': 'id_time',
-                       'name': 'time'}),
+            "title": forms.TextInput(attrs={"class": "form__input"}),
+            "description": forms.Textarea(
+                attrs={"class": "form__textarea", "rows": "8"}),
+            "duration": forms.NumberInput(
+                attrs={"class": "form__input", "id": "id_time",
+                       "name": "time"}),
         }
 
         labels = {
-            'image': 'Загрузить фото'
+            "image": "Загрузить фото"
         }
 
     def clean_ingredients(self):
@@ -44,19 +44,19 @@ class RecipeForm(forms.ModelForm):
         ingredient_names = [
             self.data[key]
             for key in self.data
-            if key.startswith('nameIngredient_')
+            if key.startswith("nameIngredient_")
         ]
 
         ingredient_units = [
             self.data[key]
             for key in self.data
-            if key.startswith('unitsIngredient_')
+            if key.startswith("unitsIngredient_")
         ]
 
         ingredient_quantities = [
             self.data[key]
             for key in self.data
-            if key.startswith('valueIngredient_')
+            if key.startswith("valueIngredient_")
         ]
 
         ingredients_clean = []
@@ -70,9 +70,9 @@ class RecipeForm(forms.ModelForm):
                 raise forms.ValidationError(
                     "Ингредиенты должны быть из списка")
             else:
-                ingredients_clean.append({'title': ingredient[0],
-                                          'unit': ingredient[1],
-                                          'quantity': ingredient[2]})
+                ingredients_clean.append({"title": ingredient[0],
+                                          "unit": ingredient[1],
+                                          "quantity": ingredient[2]})
 
         if len(ingredients_clean) == 0:
             raise forms.ValidationError("Добавьте ингредиент")
@@ -81,8 +81,8 @@ class RecipeForm(forms.ModelForm):
     def save(self, author=None):
         recipe = super().save(commit=False)
         recipe.author = author
-        ingredients = self.cleaned_data['ingredients']
-        self.cleaned_data['ingredients'] = []
+        ingredients = self.cleaned_data["ingredients"]
+        self.cleaned_data["ingredients"] = []
         recipe = super().save()
         Ingredient.objects.bulk_create(
             get_form_ingredients(ingredients, recipe)

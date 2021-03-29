@@ -153,3 +153,6 @@ LOGIN_URL = '/account/signin/'
 LOGIN_REDIRECT_URL = 'index'
 
 LOGOUT_REDIRECT_URL = 'index'
+
+
+PAGINATOR_PER_PAGE = 6

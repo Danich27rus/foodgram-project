@@ -3,20 +3,26 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 
+from .managers import FavoriteManager
 from .utils import random_string
 
 User = get_user_model()
+
+GREEN_COLOR = "#00ff00"
+RED_COLOR = "#ff0000"
+YELLOW_COLOR = "#ffff00"
+BLACK_COLOR = "#000000"
 
 
 class Tag(models.Model):
 
     name = models.CharField(max_length=10,
-                            verbose_name="имя")
+                            verbose_name="время приема")
 
-    color = RGBColorField(colors=["#00ff00", "#ff0000", "#ffff00"],
+    color = RGBColorField(colors=[GREEN_COLOR, RED_COLOR, YELLOW_COLOR],
                           max_length=10, verbose_name="цвет тэга")
 
-    color_slug = models.SlugField(default="Black",
+    color_slug = models.SlugField(default=BLACK_COLOR,
                                   verbose_name="слаг цвета")
 
     slug = models.SlugField(default=random_string(5),
@@ -28,7 +34,7 @@ class Tag(models.Model):
         verbose_name_plural = "тэги"
 
     def __str__(self):
-        return self.slug
+        return self.name
 
 
 class Product(models.Model):
@@ -62,7 +68,7 @@ class Recipe(models.Model):
         User,
         on_delete=models.CASCADE,
         db_column="author",
-        related_name="recipe",
+        related_name="recipes",
         verbose_name="автор",
     )
 
@@ -88,7 +94,7 @@ class Recipe(models.Model):
 
     ingredients = models.ManyToManyField(
         Product,
-        related_name="recipe",
+        related_name="recipes",
         through="Ingredient",
         blank=True,
         verbose_name="ингредиенты"
@@ -112,21 +118,21 @@ class Ingredient(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name="ingredients",
+        related_name="recipe_ingredients",
         verbose_name="рецепт"
     )
 
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        related_name="ingredients",
+        related_name="ingredient_product",
         verbose_name="продукт"
     )
 
     quantity = models.PositiveIntegerField(verbose_name="количество")
 
     def __str__(self):
-        return f"{self.recipe} - {self.product} - {self.quantity}"
+        return f"{self.recipe.title} - {self.product.title} - {self.quantity}"
 
     class Meta:
         ordering = ("product", )
@@ -134,36 +140,20 @@ class Ingredient(models.Model):
         unique_together = ("recipe", "product", )
 
 
-class FavoriteManager(models.Manager):
-
-    def get_tag_filtered(self, user, tags):
-        try:
-            recipes = super().get_queryset().get(user=user).recipes.all()
-            if tags:
-                return recipes.prefetch_related(
-                    "author", "tags"
-                ).filter(
-                    tags__slug__in=tags
-                ).distinct()
-            else:
-                return recipes.prefetch_related(
-                    "author", "tags"
-                ).all()
-        except self.model.DoesNotExist:
-            return []
-
-
 class Favorite(models.Model):
 
     user = models.ForeignKey(User,
-                             on_delete=models.CASCADE)
-    recipes = models.ManyToManyField(Recipe)
+                             on_delete=models.CASCADE,
+                             verbose_name="пользователь")
+
+    recipes = models.ManyToManyField(Recipe, verbose_name="рецепты")
+
     manager = FavoriteManager()
 
     class Meta:
         ordering = ("user", )
         verbose_name = "избранное"
-        verbose_plural = "избранные"
+        verbose_name_plural = "избранные"
 
 
 class Follow(models.Model):
@@ -186,7 +176,8 @@ class Follow(models.Model):
         verbose_name = "подписки"
 
     def __str__(self):
-        return f"Последователь: {self.follower}, автор: {self.author}"
+        return (f"Автор {self.author.username}, "
+                f"последователь {self.follower.username}")
 
 
 class PurchaseManager(models.Manager):
@@ -220,3 +211,7 @@ class Purchase(models.Model):
     class Meta:
         verbose_name = "покупка"
         verbose_name_plural = "покупки"
+
+    def __str__(self):
+        ls = ''.join(list(self.manager.list(self.user)))
+        return f"Пользователь {self.user.username}, покупки {ls}"

@@ -10,17 +10,17 @@ class SignupForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'username', 'email', 'password1', 'password2',)
+        fields = ("first_name", "username", "email", "password1", "password2",)
 
     def clean_email(self):
-        email = self.cleaned_data['email']
+        email = self.cleaned_data["email"]
         if User.objects.filter(email=email).count():
             raise forms.ValidationError(f"Пользователь c ящиком {email} "
                                         "уже существует.")
         return email
 
     def clean_username(self):
-        username = self.cleaned_data['username']
+        username = self.cleaned_data["username"]
         if User.objects.filter(username=username).count():
             raise forms.ValidationError(f"Пользователь {username} "
                                         "уже существует.")
@@ -50,44 +50,44 @@ class SigninForm(AuthenticationForm):
     class Meta:
 
         model = User
-        fields = {'username', 'password', }
+        fields = {"username", "password", }
 
         error_messages = {
-            'required': "Это поле необходимо заполнить.",
-            'invalid_login': (
+            "required": "Это поле необходимо заполнить.",
+            "invalid_login": (
                 "Имя и пароль не совпадают. Введите "
                 "правильные данные."
             ),
-            'inactive': "Этот аккаунт не активен.",
+            "inactive": "Этот аккаунт не активен.",
         }
 
 
 class UserPasswordResetForm(SetPasswordForm):
 
     new_password1 = forms.CharField(
-        label='Пароль',
+        label="Пароль",
         max_length=100,
         required=True,
         widget=forms.PasswordInput(
             attrs={
-                'class': 'form-control',
-                'placeholder': 'password',
-                'type': 'password',
-                'id': 'user_password',
+                "class": "form-control",
+                "placeholder": "password",
+                "type": "password",
+                "id": "user_password",
             }
         )
     )
 
     new_password2 = forms.CharField(
-        label='Confirm password',
+        label="Confirm password",
         max_length=100,
         required=True,
         widget=forms.PasswordInput(
             attrs={
-                'class': 'form-control',
-                'placeholder': 'confirm password',
-                'type': 'password',
-                'id': 'user_password',
+                "class": "form-control",
+                "placeholder": "confirm password",
+                "type": "password",
+                "id": "user_password",
             }
         )
     )
