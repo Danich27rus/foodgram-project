@@ -26,8 +26,8 @@ def new_view(request):
         files=request.FILES or None
     )
     if form.is_valid():
-        form.save(author=request.user)
-        return redirect("index")
+        recipe = form.save(author=request.user)
+        return redirect("recipe_view", recipe_id=recipe.id)
     tags = Tag.objects.all()
     context = {
         "page_title": "Создание рецепта",
@@ -71,19 +71,15 @@ def edit_view(request, recipe_id):
         instance=recipe
     )
     if form.is_valid():
-        recipe.ingredients.remove()
-        recipe.ingredient.all().delete()
+        recipe.recipe_ingredients.all().delete()
         form.save(author=request.user)
         return redirect("recipe_view", recipe_id=recipe_id)
     form = RecipeForm(instance=recipe)
     tags = Tag.objects.all()
-    checked_tags = recipe.tags.all()
     context = {
-        "recipe_id": recipe_id,
         "page_title": "Редактирование рецепта",
         "button": "Сохранить",
         "tags": tags,
-        "checked_tags": checked_tags,
         "form": form,
         "recipe": recipe,
         "edit": True,
@@ -125,7 +121,7 @@ class IndexView(View):
 
 
 @method_decorator(login_required, name="dispatch")
-class Follows(View):
+class FollowsView(View):
 
     def get(self, request):
 
@@ -151,11 +147,11 @@ class FavoritesView(View):
         tags = request.GET.getlist("filters")
         try:
             if not tags:
-                recipes = Favorite.manager.get_object_or_404(
-                    user=user).recipes.all()
+                recipes = Favorite.manager.prefetch_related(
+                    'recipes__tags', 'recipes__author'
+                ).filter(user=user)
             else:
-                recipes = Favorite.manager.get_object_or_404(
-                    user=user).recipes.filter(
+                recipes = Favorite.manager.get(user=user).recipes.filter(
                     tags__slug__in=tags)
         except Recipe.DoesNotExist:
             return []
@@ -164,7 +160,8 @@ class FavoritesView(View):
     def get(self, request):
 
         user = request.user
-        recipes = self.get_queryset(request, user)
+        # recipes = self.get_queryset(request, user)
+        recipes = Recipe.objects.all()
         paginator = Paginator(recipes, PER_PAGE)
         page_number = request.GET.get("page")
         page = paginator.get_page(page_number)

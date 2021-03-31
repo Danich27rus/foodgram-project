@@ -13,7 +13,7 @@
     </div>
     <div class="card-user__body">
         <ul class="card-user__items">
-            {% for recipe in follow.author.recipe.all %}
+            {% for recipe in follow.author.recipes.all %}
                 {% if forloop.counter < 4 %}
                     <li class="card-user__item">
                         <div class="recipe">
@@ -33,15 +33,9 @@
             {% endif %}
         </ul>
     </div>
-    {% if request.user.is_authenticated %}
-        <div class="single-card__item">
-            {% if recipe.author|subscribed:request.user %}
-                    <button class="button button_style_light-blue button_size_auto" name="subscribe" >Отписаться от автора</button></p>
-            {% else %}
-                    <button class="button button_style_light-blue button_size_auto" name="subscribe" data-out>Подписаться на автора</button></p>
-            {% endif %}
-        </div>
-    {% endif %}
+    <div class="single-card__item">
+        {% include 'recipes/buttonSubscribe.html' with follower=request.user author=follow.author %}
+    </div>
 </div>
 
 {% block javascript %}

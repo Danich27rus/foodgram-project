@@ -18,7 +18,7 @@ urlpatterns = [
 
     path("purchases/", views.PurchaseView.as_view(), name="purchases_view"),
 
-    path("follows/", views.Follows.as_view(), name="follows"),
+    path("follows/", views.FollowsView.as_view(), name="follows"),
 
     path("shoplist/", views.GetShopList.as_view(), name="shoplist"),
 ]

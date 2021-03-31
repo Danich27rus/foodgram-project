@@ -1,13 +1,14 @@
 from django import template
 from django.utils.safestring import mark_safe
-from recipes.models import Favorite, Follow, Purchase
+
+from recipes.models import Favorite, Purchase
 
 register = template.Library()
 
 
 @register.filter
 def subscribed(author, follower):
-    return Follow.objects.filter(follower=follower).exists()
+    return author.followed.filter(follower=follower).exists()
 
 
 @register.filter

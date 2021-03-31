@@ -1,7 +1,7 @@
-from .views import (GetIngredients, FollowTo, FollowDelete, FavoriteView,
-                    PurchaseView)
 from django.urls import path
 
+from .views import (FavoriteView, FollowDelete, FollowTo, GetIngredients,
+                    PurchaseView)
 
 urlpatterns = [
     path("v1/subscriptions", FollowTo.as_view(), name="follow_to"),

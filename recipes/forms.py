@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
-from .models import Product, Recipe, Tag, Ingredient
+from .models import Ingredient, Product, Recipe, Tag
 from .utils import get_form_ingredients
 
 User = get_user_model()

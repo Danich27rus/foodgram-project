@@ -43,13 +43,13 @@
                         {% include 'recipes/buttonPurchase.html' %}
                     </li>
                     <li class="single-card__item">
-                        {% include 'recipes/buttonSubscribe.html'%}
+                        {% include 'recipes/buttonSubscribe.html' with follower=request.user author=recipe.author %}
                     </li>
                 </ul>
                 <div class="single-card__section">
                     <h3 class="single-card__section-title">Ингридиенты:</h3>
                     <div class="single-card__items single-card__items_column">
-                        {% for ingredient in recipe.ingredient.all %}
+                        {% for ingredient in recipe.recipe_ingredients.all %}
                             <p class=" single-card__section-item">{{ ingredient.product.title }} - {{ ingredient.quantity }} {{ ingredient.product.dimension }}.</p>
                         {% endfor %}
                     </div>
@@ -62,6 +62,8 @@
             </div>
         </div>
     </main>
+
+
 
 <script src="{% static 'js/components/Purchases.js' %}"></script>
 <script src="{% static 'js/components/Favorites.js' %}"></script>

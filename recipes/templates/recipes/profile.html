@@ -18,23 +18,26 @@
             </h1>
         {% include "recipes/tags.html" %}
         </div>
-        {% if request.user.is_authenticated %}
+      {% comment %}  {% if request.user.is_authenticated %}
             {% if request.user != author %}
                 <div class="author-subscribe" data-author="{{ author.id }}">
-                    <p style="padding: 0 0 2em 0;">
+                     <p style="padding: 0 0 2em 0;">
                         {% if author|subscribed:user %}
                             <button class="button button_style_light-blue button_size_subscribe" name="subscribe">Отписаться от автора</button>
                         {% else %}
                             <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out="True">Подписаться на автора</button>
                         {% endif %}
-                    </p>
-                </div>
-            {% endif %}
-        {% endif %}
+                    </p> {% endcomment %}
+                    <li class="single-card__item">
+                        {% include 'recipes/buttonSubscribe.html' with author=author follower=request.user %}
+                    </li>
+           {% comment %}     </div>
+             {% endif %}
+        {% endif %} {% endcomment %}
         <div class="card-list">
                 {% for recipe in page %}
                     <div class="card" data-id={{ recipe.id }}>
-                        {% include "recipes/previewRecipe.html" with recipe=recipe %}
+                        {% include "recipes/previewRecipe.html" %}
                     </div>
                 {% endfor %}
         </div>

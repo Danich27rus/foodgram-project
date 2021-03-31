@@ -90,10 +90,11 @@ def activate(request, uidb64, token):
         return render(request, "account/signup.html", {"msg": msg_failed})
 
 
+@require_http_methods(["GET", "POST"])
 @login_required
 def change_password(request):
 
-    form = PasswordChangeForm(request.user or None, request.POST or None)
+    form = PasswordChangeForm(request.user, request.POST or None)
     if form.is_valid():
         user = form.save()
         update_session_auth_hash(request, user)

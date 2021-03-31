@@ -143,12 +143,19 @@ class Ingredient(models.Model):
 class Favorite(models.Model):
 
     user = models.ForeignKey(User,
+                             related_name="favorites",
                              on_delete=models.CASCADE,
                              verbose_name="пользователь")
 
-    recipes = models.ManyToManyField(Recipe, verbose_name="рецепты")
+    recipes = models.ForeignKey(Recipe,
+                                verbose_name="рецепты",
+                                on_delete=models.CASCADE,
+                                related_name="favorites")
 
     manager = FavoriteManager()
+
+    def __str__(self):
+        return f"{self.user.username} - {self.recipes.title}"
 
     class Meta:
         ordering = ("user", )

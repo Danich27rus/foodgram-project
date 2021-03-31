@@ -21,7 +21,7 @@
 		</li>
 
 		{% url 'favorites' as favorites %}
-		<li class="nav__item {% if request.path == "/"|add:request.resolver_match.url_name %}nav__item_active{% endif %}">
+		<li class="nav__item {% if request.path == "/"|add:request.resolver_match.url_name|add:"/" %}nav__item_active{% endif %}">
 			<a href="{% url 'favorites' %}" class="nav__link link">
 				Избранное
 			</a>

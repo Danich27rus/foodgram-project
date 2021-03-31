@@ -8,7 +8,6 @@ environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# FIXTURE_DIRS = [os.path.join(BASE_DIR, 'fixtures'), ]
 if str(BASE_DIR) == '/code':
     DEBUG = False
 else:
@@ -53,9 +52,9 @@ INSTALLED_APPS = [
     'account',
     'recipes',
     'api',
-    'templatetags',
     'colorful',
     'mathfilters',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -86,7 +85,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'libraries': {
-                'user_filters': 'templatetags.user_filters',
+                'user_filters': 'foodgram.templatetags.user_filters',
                 'recipes_filters': 'recipes.templatetags.recipes_filters',
             }
         },
@@ -130,8 +129,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-# AUTH_USER_MODEL = 'account.User'
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 MAILER_EMAIL_BACKEND = EMAIL_BACKEND
@@ -153,6 +150,5 @@ LOGIN_URL = '/account/signin/'
 LOGIN_REDIRECT_URL = 'index'
 
 LOGOUT_REDIRECT_URL = 'index'
-
 
 PAGINATOR_PER_PAGE = 6
