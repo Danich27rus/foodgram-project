@@ -147,11 +147,11 @@ class FavoritesView(View):
         tags = request.GET.getlist("filters")
         try:
             if not tags:
-                recipes = Favorite.manager.prefetch_related(
-                    'recipes__tags', 'recipes__author'
-                ).filter(user=user)
+                recipes = Recipe.objects.filter(
+                    favorite_recipes__user=user).distinct()
             else:
-                recipes = Favorite.manager.get(user=user).recipes.filter(
+                recipes = Recipe.objects.filter(
+                    favorite_recipes__user=user).filter(
                     tags__slug__in=tags)
         except Recipe.DoesNotExist:
             return []
@@ -160,8 +160,8 @@ class FavoritesView(View):
     def get(self, request):
 
         user = request.user
-        # recipes = self.get_queryset(request, user)
-        recipes = Recipe.objects.all()
+        recipes = self.get_queryset(request, user)
+        # recipes = Recipe.objects.all()
         paginator = Paginator(recipes, PER_PAGE)
         page_number = request.GET.get("page")
         page = paginator.get_page(page_number)

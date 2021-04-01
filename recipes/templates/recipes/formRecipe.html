@@ -1,13 +1,12 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}{{ page_title }}{% endblock %}
 {% block css %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'pages/form.css' %}">
+    <link rel="stylesheet" href="{% static "pages/form.css" %}">
 {% endblock %}
 
 {% block content %}
 {% load recipes_filters %}
-{% load user_filters %}
 <main class="main container">
     <div class="main__header">
         <h1 class="main__title">{{ page_title }}</h1>
@@ -105,7 +104,7 @@
             <div class="form__footer">
                 <input type="submit"p onclick="return((checkboxCheck(tags)) && ingredientCheck(nameIngredient));" class="button button_style_blue" value="{{ button }}">
                 {% if recipe.id %}
-                    <a style="margin-left: 2.5em" href="{% url 'recipe_delete' recipe_id=recipe.id %}" class="form__ingredient-link">Удалить</a>
+                    <a style="margin-left: 2.5em" href="{% url "recipe_delete" recipe_id=recipe.id %}" class="form__ingredient-link">Удалить</a>
                 {% endif %}
             </div>
 
@@ -115,11 +114,11 @@
 
 {% block javascript %}
 {% load static %}
-<script src="{% static 'js/config/config.js' %}"></script>
-<script src="{% static 'js/components/Header.js' %}"></script>
-<script src="{% static 'js/utils/debouncing.js' %}"></script>
-<script src="{% static 'js/api/Api.js' %}"></script>
-<script src="{% static 'formRecipe.js' %}"></script>
+<script src="{% static "js/config/config.js" %}"></script>
+<script src="{% static "js/components/Header.js" %}"></script>
+<script src="{% static "js/utils/debouncing.js" %}"></script>
+<script src="{% static "js/api/Api.js" %}"></script>
+<script src="{% static "formRecipe.js" %}"></script>
 {% endblock %}
 
 {% endblock %}

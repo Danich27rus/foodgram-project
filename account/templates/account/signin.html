@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 {% block css %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'pages/form.css' %}">
+    <link rel="stylesheet" href="{% static "pages/form.css" %}">
 {% endblock %}
 {% block content %}
     <main class="main container">
@@ -44,7 +44,7 @@
                     </span>
                     <div class="form__footer">
                         <button class="button button_style_blue">Войти</button>
-                        <a class="form__forgot-link" href="{% url 'reset' %}">Забыли пароль?</a>
+                        <a class="form__forgot-link" href="{% url "reset" %}">Забыли пароль?</a>
                     </div>
                 {% endif %}
             </form>

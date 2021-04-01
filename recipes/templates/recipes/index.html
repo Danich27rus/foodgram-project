@@ -2,45 +2,44 @@
 {% block title %} {{ page_title }} {% endblock %}
 {% block css %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'pages/index.css' %}">
+    <link rel="stylesheet" href="{% static "pages/index.css" %}">
 {% endblock %}
 {% block content %}
     {% load static recipes_filters %}
     <main class="main container">
         <div class="main__header">
             <h1 class="main__title">{{ page_title }}</h1>
-            {% include "recipes/tags.html" %}
+            {% include "recipes/includes/tags.html" %}
         </div>
 
         <div class="card-list">
                 {% for recipe in page %}
-                {{ recipe }}
                     <div class="card" data-id={{ recipe.id }}>
-                        {% include "recipes/previewRecipe.html" with recipe=recipe %}
+                        {% include "recipes/includes/previewRecipe.html" with recipe=recipe %}
                     </div>
                 {% endfor %}
         </div>
         {% if page.has_other_pages %}
-            {% include "paginator.html" with page=page paginator=paginator %}
+            {% include "includes/paginator.html" with page=page paginator=paginator %}
         {% endif %}
     </main>
 
-{% block javascript %}
-{% load static %}
-    <script src="{% static 'js/components/MainCards.js' %}"></script>
-    <script src="{% static 'js/components/Purchases.js' %}"></script>
-    {% if request.user.is_authenticated %}
-    <script src="{% static 'js/components/Favorites.js' %}"></script>
-    {% endif %}
-    <script src="{% static 'js/config/config.js' %}"></script>
-    <script src="{% static 'js/components/CardList.js' %}"></script>
-    <script src="{% static 'js/components/Header.js'%}"></script>
-    <script src="{% static 'js/api/Api.js' %}"></script>
-    {% if request.user.is_authenticated %}
-        <script src="{% static 'indexAuth.js' %}"></script>
-    {% else %}
-        <script src="{% static 'indexNotAuth.js' %}"></script>
-    {% endif %}
 {% endblock %}
 
+{% block javascript %}
+{% load static %}
+    <script src="{% static "js/components/MainCards.js" %}"></script>
+    <script src="{% static "js/components/Purchases.js" %}"></script>
+    {% if request.user.is_authenticated %}
+    <script src="{% static "js/components/Favorites.js" %}"></script>
+    {% endif %}
+    <script src="{% static "js/config/config.js" %}"></script>
+    <script src="{% static "js/components/CardList.js" %}"></script>
+    <script src="{% static "js/components/Header.js"%}"></script>
+    <script src="{% static "js/api/Api.js" %}"></script>
+    {% if request.user.is_authenticated %}
+        <script src="{% static "indexAuth.js" %}"></script>
+    {% else %}
+        <script src="{% static "indexNotAuth.js" %}"></script>
+    {% endif %}
 {% endblock %}

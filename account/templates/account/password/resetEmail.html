@@ -1,5 +1,5 @@
 {% autoescape off %}
 Здравствуйте, {% if user.first_name %} {{ user.first_name }} {% else %} {{ user.username }} {% endif %},
 Пожалуйста, перейдите по ссылке для сброса пароля
-http://{{ domain }}{% url 'reset_password_confirm' uidb64=uid token=token %}
+http://{{ domain }}{% url "reset_password_confirm" uidb64=uid token=token %}
 {% endautoescape %}

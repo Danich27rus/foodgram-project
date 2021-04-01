@@ -14,13 +14,14 @@
 		<header class="header">
 			<nav class="nav">
 				<div class="nav__container container">
-					{% include 'nav.html' %}
-					{% include 'account/nav.html' %}
+					{% include "includes/nav.html" %}
+					{% include "account/includes/nav.html" %}
 				</div>
 			</nav>
 		</header>
 		{% block content %}
 		{% endblock content %}
-		{% include "footer.html" %}
+		{% include "includes/footer.html" %}
 	</body>
 </html>
+{% block javascript %}{% endblock %}
