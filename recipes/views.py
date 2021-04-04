@@ -10,7 +10,7 @@ from django.views import View
 from django.views.decorators.http import require_http_methods
 
 from .forms import RecipeForm
-from .models import Favorite, Follow, Ingredient, Purchase, Recipe, Tag
+from .models import Follow, Ingredient, Purchase, Recipe, Tag
 
 PER_PAGE = getattr(settings, "PAGINATOR_PER_PAGE", None)
 
