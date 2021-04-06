@@ -160,8 +160,8 @@ class FavoritesView(View):
     def get(self, request):
 
         user = request.user
-        # recipes = self.get_queryset(request, user)
-        recipes = Recipe.objects.all()
+        recipes = self.get_queryset(request, user)
+        # recipes = Recipe.objects.all()
         paginator = Paginator(recipes, PER_PAGE)
         page_number = request.GET.get("page")
         page = paginator.get_page(page_number)

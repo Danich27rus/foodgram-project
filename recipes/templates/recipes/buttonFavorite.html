@@ -1,7 +1,7 @@
 {% load recipes_filters %}
 
 <div class="single-card__favorite">
-    {% comment %} {% if request.user.is_authenticated %}
+    {% if request.user.is_authenticated %}
             {% if recipe|favorite:user %}
                 <button class="button button_style_none" name="favorites" data-out><span class="icon-favorite icon-favorite_active"></span></button>
                 <div class="single-card__favorite-tooltip tooltip"></div>
@@ -9,5 +9,5 @@
                 <button class="button button_style_none" name="favorites" data-out><span class="icon-favorite icon-favorite"></span></button>
                 <div class="single-card__favorite-tooltip tooltip"></div>
             {% endif %}
-    {% endif %} {% endcomment %}
+    {% endif %}
 </div>
