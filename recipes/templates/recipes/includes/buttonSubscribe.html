@@ -1,7 +1,6 @@
 {% load recipes_filters %}
 {% load static %}
 {% if follower.is_authenticated %}
-
     {% if author|subscribed:follower %}
         <button class="button button_style_light-blue button_size_subscribe" name="subscribe" >Отписаться от автора</button></p>
     {% else %}

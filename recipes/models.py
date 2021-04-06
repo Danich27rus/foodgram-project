@@ -104,13 +104,13 @@ class Recipe(models.Model):
 
     tags = models.ManyToManyField(Tag, verbose_name="тэги")
 
-    def __str__(self):
-        return f"{self.title} - {self.author}"
-
     class Meta:
         ordering = ("-pub_date", "title",)
         verbose_name = "Рецепт"
         verbose_name_plural = "Рецепты"
+
+    def __str__(self):
+        return f"{self.title} - {self.author}"
 
 
 class Ingredient(models.Model):
@@ -125,19 +125,19 @@ class Ingredient(models.Model):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
-        related_name="ingredient_product",
+        related_name="recipe_ingredients",
         verbose_name="продукт"
     )
 
     quantity = models.PositiveIntegerField(verbose_name="количество")
 
-    def __str__(self):
-        return f"{self.recipe.title} - {self.product.title} - {self.quantity}"
-
     class Meta:
         ordering = ("product", )
         verbose_name = "Ингредиент"
         unique_together = ("recipe", "product", )
+
+    def __str__(self):
+        return f"{self.recipe.title} - {self.product.title} - {self.quantity}"
 
 
 class Favorite(models.Model):
@@ -150,17 +150,17 @@ class Favorite(models.Model):
     recipes = models.ForeignKey(Recipe,
                                 verbose_name="рецепты",
                                 on_delete=models.CASCADE,
-                                related_name="favorites")
+                                related_name="favorite_recipes")
 
     manager = FavoriteManager()
-
-    def __str__(self):
-        return f"{self.user.username} - {self.recipes.title}"
 
     class Meta:
         ordering = ("user", )
         verbose_name = "избранное"
         verbose_name_plural = "избранные"
+
+    def __str__(self):
+        return f"{self.user.username} - {self.recipes.title}"
 
 
 class Follow(models.Model):

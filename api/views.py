@@ -65,12 +65,10 @@ class FavoriteView(View):
         recipe_id = json_data["id"]
         recipe = get_object_or_404(Recipe, id=recipe_id)
         data = {"success": True}
-        favorite, created = Favorite.manager.get_or_create(user=request.user)
-        is_favorite = Favorite.manager.filter(id=recipe_id).exists()
-        if is_favorite:
+        favorite, created = Favorite.manager.get_or_create(user=request.user,
+                                                           recipes=recipe)
+        if not created:
             data["success"] = False
-        else:
-            favorite.recipes.add(recipe)
         return JsonResponse(data)
 
     def delete(self, request, recipe_id):

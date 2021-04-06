@@ -1,11 +1,10 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% block title %}{{ page_title }}{% endblock %}
 {% load static %}
 {% block css %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'pages/myFollow.css' %}">
+    <link rel="stylesheet" href="{% static "pages/myFollow.css" %}">
 {% endblock %}
-{% load user_filters %}
 
 {% block content %}
     {% load static %}
@@ -16,10 +15,10 @@
         </div>
         <div class="card-list">
             {% for follow in page %}
-                {% include 'recipes/followItem.html' with follow=follow %}
+                {% include "recipes/includes/followItem.html" with follow=follow %}
             {% endfor %}
         </div>
-        {% include 'paginator.html' with page=page paginator=paginator %}
+        {% include "includes/paginator.html" with page=page paginator=paginator %}
     </main>
 
 {% endblock %}

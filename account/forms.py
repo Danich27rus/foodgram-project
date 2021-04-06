@@ -14,14 +14,14 @@ class SignupForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data["email"]
-        if User.objects.filter(email=email).count():
+        if User.objects.filter(email=email).exists():
             raise forms.ValidationError(f"Пользователь c ящиком {email} "
                                         "уже существует.")
         return email
 
     def clean_username(self):
         username = self.cleaned_data["username"]
-        if User.objects.filter(username=username).count():
+        if User.objects.filter(username=username).exists():
             raise forms.ValidationError(f"Пользователь {username} "
                                         "уже существует.")
         return username

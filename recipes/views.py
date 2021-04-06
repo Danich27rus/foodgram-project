@@ -10,7 +10,7 @@ from django.views import View
 from django.views.decorators.http import require_http_methods
 
 from .forms import RecipeForm
-from .models import Favorite, Follow, Ingredient, Purchase, Recipe, Tag
+from .models import Follow, Ingredient, Purchase, Recipe, Tag
 
 PER_PAGE = getattr(settings, "PAGINATOR_PER_PAGE", None)
 
@@ -147,11 +147,11 @@ class FavoritesView(View):
         tags = request.GET.getlist("filters")
         try:
             if not tags:
-                recipes = Favorite.manager.prefetch_related(
-                    'recipes__tags', 'recipes__author'
-                ).filter(user=user)
+                recipes = Recipe.objects.filter(
+                    favorite_recipes__user=user).distinct()
             else:
-                recipes = Favorite.manager.get(user=user).recipes.filter(
+                recipes = Recipe.objects.filter(
+                    favorite_recipes__user=user).filter(
                     tags__slug__in=tags)
         except Recipe.DoesNotExist:
             return []

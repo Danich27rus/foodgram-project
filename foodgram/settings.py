@@ -85,7 +85,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
             'libraries': {
-                'user_filters': 'foodgram.templatetags.user_filters',
                 'recipes_filters': 'recipes.templatetags.recipes_filters',
             }
         },

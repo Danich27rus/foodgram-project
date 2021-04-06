@@ -1,0 +1,45 @@
+{% load recipes_filters %}
+<ul class="nav__items list">
+	{% url "index" as index %}
+	<li class="nav__item {% if request.resolver_match.url_name == "index" %}nav__item_active{% endif %}">
+		<a href="{% url "index" %}" class="nav__link link">
+			Рецепты
+		</a>
+	</li>
+	{% if request.user.is_authenticated %}
+
+		{% url "subscriptions" as subscriptions %}
+		<li class="nav__item {% if request.resolver_match.url_name == "follows" %}nav__item_active{% endif %}">
+			<a href="{% url "follows" %}" class="nav__link link">Мои подписки</a>
+		</li>
+
+		{% url "new" as new %}
+		<li class="nav__item {% if request.resolver_match.url_name == "recipe_new"  %}nav__item_active{% endif %}">
+			<a href="{% url "recipe_new" %}" class="nav__link link">
+				Создать рецепт
+			</a>
+		</li>
+
+		{% url "favorites" as favorites %}
+		<li class="nav__item {% if request.resolver_match.url_name == "favorites" %}nav__item_active{% endif %}">
+			<a href="{% url "favorites" %}" class="nav__link link">
+				Избранное
+			</a>
+		</li>
+
+		<li class="nav__item 
+			{% if request.resolver_match.url_name == "purchases_view" %}
+				nav__item_active
+			{% endif %}">
+			<a href="{% url "purchases_view" %}" class="nav__link link">
+				Список покупок
+			</a>
+			<span class="badge badge_style_blue nav__badge" id="counter">
+				{{ user.purchases.recipes }}
+				{% if user|purchase_count %} 
+					{{ user|purchase_count }} 
+				{% endif %}
+			</span>
+		</li>
+	{% endif %}
+</ul>
