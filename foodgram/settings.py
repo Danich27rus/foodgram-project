@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'api',
     'colorful',
     'mathfilters',
-    'django_extensions',
 ]
 
 MIDDLEWARE = [
