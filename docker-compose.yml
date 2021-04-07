@@ -5,8 +5,6 @@ volumes:
   static_volume:
   media_volume:
   .env:
-  /data/certbot/conf:
-  /data/certbot/www:
 
 services:
   db:
