@@ -11,39 +11,41 @@
 
 {% block content %}
 
-<main class="main container">
-{% csrf_token %}
-    <div class="main__header">
-        <h1 class="main__title">{{ page_title }}</h1>
-    </div>
-    <div class="card-list card-list_column">
-        <ul class="shopping-list">
-            {% for recipe in recipes %}
+    <main class="main container">
+    {% csrf_token %}
+        <div class="main__header">
+            <h1 class="main__title">{{ page_title }}</h1>
+        </div>
+        <div class="card-list card-list_column">
+            <ul class="shopping-list">
+                {% for recipe in recipes %}
 
-                <li class="shopping-list__item" data-id="{{ recipe.id }}">
-                    <div class="recipe recipe_reverse">
-                
-                        <a href="{% url "recipe_view" recipe_id=recipe.id %}" class="link" target="_blank">
-                            {% thumbnail recipe.pic "90x90" crop="center" upscale=True as pic %}
-                                <img src="{{ pic.url }}" alt="{{ recipe.title }}" class="recipe__image recipe__image_big">
-                            {% endthumbnail %}
-                        </a>
-                        <a class="card__title link" href="{% url "recipe_view" recipe_id=recipe.id %}" target="_blank">
-                            <h3 class="recipe__title">{{ recipe.title }}</h3>
-                        </a>
-                        <p class="recipe__text"><span class="icon-time"></span> {{ recipe.duration }} мин.</p>
-                    </div>
-                    <button class="shopping-list__button link">Удалить</button>
-                </li>
+                    <li class="shopping-list__item" data-id="{{ recipe.id }}">
+                        <div class="recipe recipe_reverse">
+                    
+                            <a href="{% url "recipe_view" recipe_id=recipe.id %}" class="link" target="_blank">
+                                {% thumbnail recipe.pic "90x90" crop="center" upscale=True as pic %}
+                                    <img src="{{ pic.url }}" alt="{{ recipe.title }}" class="recipe__image recipe__image_big">
+                                {% endthumbnail %}
+                            </a>
+                            <a class="card__title link" href="{% url "recipe_view" recipe_id=recipe.id %}" target="_blank">
+                                <h3 class="recipe__title">{{ recipe.title }}</h3>
+                            </a>
+                            <p class="recipe__text"><span class="icon-time"></span> {{ recipe.duration }} мин.</p>
+                        </div>
+                        <button class="shopping-list__button link">Удалить</button>
+                    </li>
 
-            {% endfor %}
+                {% endfor %}
 
-        </ul>
-        {% if recipes %}
-            <a href="{% url "shoplist" %}"><button class="button button_style_blue">Скачать список</button></a>
-        {% endif %}
-    </div>
-</main>
+            </ul>
+            {% if recipes %}
+                <a href="{% url "shoplist" %}"><button class="button button_style_blue">Скачать список</button></a>
+            {% endif %}
+        </div>
+    </main>
+
+{% endblock %}
 
 {% block javascript %}
 {% load static %}
@@ -52,6 +54,4 @@
 <script src="{% static "js/components/ShopList.js" %}"></script>
 <script src="{% static "js/api/Api.js" %}"></script>
 <script src="{% static "shopList.js" %}"></script>
-{% endblock %}
-
 {% endblock %}
