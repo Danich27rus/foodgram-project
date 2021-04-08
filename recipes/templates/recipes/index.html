@@ -4,9 +4,9 @@
     {% load static %}
     <link rel="stylesheet" href="{% static "pages/index.css" %}">
 {% endblock %}
-{% block content %}
-    {% load static recipes_filters %}
     {{ user.is_authenticated }}
+{% block content %}
+    {% load recipes_filters %}
     <main class="main container">
         <div class="main__header">
             <h1 class="main__title">{{ page_title }}</h1>

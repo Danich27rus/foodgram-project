@@ -1,5 +1,5 @@
 <ul class="nav__items list">
-    {% if request.user.is_authenticated %}
+    {% if user.is_authenticated %}
         {% comment %} <li class="nav__item">
     		{% include "includes/iconUser.html" with user_id=request.user.id %}
         </li> {% endcomment %}
