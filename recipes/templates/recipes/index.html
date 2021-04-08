@@ -6,6 +6,7 @@
 {% endblock %}
 {% block content %}
     {% load static recipes_filters %}
+    {{ user.is_authenticated }}
     <main class="main container">
         <div class="main__header">
             <h1 class="main__title">{{ page_title }}</h1>
@@ -30,14 +31,14 @@
 {% load static %}
     <script src="{% static "js/components/MainCards.js" %}"></script>
     <script src="{% static "js/components/Purchases.js" %}"></script>
-    {% if request.user.is_authenticated %}
+    {% if user.is_authenticated %}
     <script src="{% static "js/components/Favorites.js" %}"></script>
     {% endif %}
     <script src="{% static "js/config/config.js" %}"></script>
     <script src="{% static "js/components/CardList.js" %}"></script>
     <script src="{% static "js/components/Header.js"%}"></script>
     <script src="{% static "js/api/Api.js" %}"></script>
-    {% if request.user.is_authenticated %}
+    {% if user.is_authenticated %}
         <script src="{% static "indexAuth.js" %}"></script>
     {% else %}
         <script src="{% static "indexNotAuth.js" %}"></script>
