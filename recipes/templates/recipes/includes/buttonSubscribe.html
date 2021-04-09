@@ -2,10 +2,10 @@
 {% load static %}
 {% if follower.is_authenticated %}
     {% if author|subscribed:follower %}
-        <button class="button button_style_light-blue button_size_subscribe" name="subscribe" >Отписаться от автора</button></p>
+        <button class="button button_style_light-blue button_size_subscribe" name="subscribe" >Отписаться от автора</button>
     {% else %}
         {% if not author == follower %}
-            <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться на автора</button></p>
+            <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться на автора</button>
         {% endif %}
     {% endif %}
 {% endif %}

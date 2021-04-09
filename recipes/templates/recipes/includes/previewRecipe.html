@@ -1,4 +1,5 @@
 {% load thumbnail %}
+{% load recipes_filters %}
 {% thumbnail recipe.pic "300x300" crop="center" upscale=True as pic %}
 	<img src="{{ recipe.pic.url }}" alt="{{ recipe }}" class="card__image">
 {% endthumbnail %}
@@ -7,7 +8,6 @@
 <div class="card__body">
 
 	<a class="card__title  link" href="{% url "recipe_view" recipe_id=recipe.id %}" target="_blank">{{ recipe.title }}</a>
-	{% include "recipes/includes/buttonFavorite.html" %}
 	<ul class="card__items">
 		{% for tag in recipe.tags.all %}
 			<li class="single-card__item"><span class="badge badge_style_{{ tag.color_slug }}" >{{ tag.name }}</span></li>
@@ -22,4 +22,11 @@
 
 <div class="card__footer">
 	{% include  "recipes/includes/buttonPurchase.html" %}
+	{% if user.is_authenticated %}
+		{% if recipe|favorite:user %}
+			<button class="button button_style_none" name="favorites"><span class="icon-favorite icon-favorite_active"></span></button>
+		{% else %}
+			<button class="button button_style_none" name="favorites" data-out><span class="icon-favorite"></span></button>
+		{% endif %}
+	{% endif %}
 </div>

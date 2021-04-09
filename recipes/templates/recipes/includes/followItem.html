@@ -33,8 +33,18 @@
             {% endif %}
         </ul>
     </div>
-    <div class="single-card__item">
-        {% include 'recipes/includes/buttonSubscribe.html' with follower=request.user author=follow.author %}
+    <div class="card-user__footer">
+    {% comment %} {{ user.is_authenticated }} {% endcomment %}
+        {% comment %} {% include 'recipes/includes/buttonSubscribe.html' with follower=request.user author=follow.author %} {% endcomment %}
+        {% if user.is_authenticated %}
+            {% if user|subscribed:follow.author %}
+                <button class="button button_style_light-blue button_size_auto" name="subscribe" >Отписаться от автора</button>
+            {% else %}
+                {% if not user == follow.author %}
+                    <button class="button button_style_light-blue button_size_auto" name="subscribe" data-out>Подписаться на автора</button>
+                {% endif %}
+            {% endif %}
+        {% endif %}
     </div>
 </div>
 

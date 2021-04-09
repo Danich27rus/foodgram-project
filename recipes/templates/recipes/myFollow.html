@@ -18,7 +18,9 @@
                 {% include "recipes/includes/followItem.html" with follow=follow %}
             {% endfor %}
         </div>
-        {% include "includes/paginator.html" with page=page paginator=paginator %}
+        {% if page.has_other_pages %}
+            {% include "includes/paginator.html" with page=page paginator=paginator %}
+        {% endif %}
     </main>
 
 {% endblock %}
