@@ -18,6 +18,9 @@
             </h1>
         {% include "recipes/includes/tags.html" %}
         </div>
+        <div class="author-subscribe" data-author="{{ author.id }}">
+            {% include "recipes/includes/buttonSubscribe.html" with follower=request.user author=author %}
+        </div>
         <div class="card-list">
             {% for recipe in page %}
                 <div class="card" data-id={{ recipe.id }}>
@@ -38,7 +41,10 @@
 <script src="{% static "js/config/config.js" %}"></script>
 
 <script src="{% static "js/components/MainCards.js" %}"></script>
+<script src="{% static "js/components/AuthorRecipe.js" %}"></script>
 <script src="{% static "js/components/Header.js" %}"></script>
 
 <script src="{% static "js/api/Api.js" %}"></script>
+<script src="{% static "authorRecipe.js" %}"></script>
+
 {% endblock %}
