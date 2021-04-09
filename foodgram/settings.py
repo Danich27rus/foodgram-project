@@ -36,8 +36,6 @@ else:
         }
     }
 
-DEBUG = True
-
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [

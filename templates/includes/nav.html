@@ -35,10 +35,7 @@
 				Список покупок
 			</a>
 			<span class="badge badge_style_blue nav__badge" id="counter">
-				{{ user.purchases.recipes }}
-				{% if user|purchase_count %} 
-					{{ user|purchase_count }} 
-				{% endif %}
+				{{ user|purchase_count }} 
 			</span>
 		</li>
 	{% endif %}

@@ -134,7 +134,6 @@ class Ingredient(models.Model):
     class Meta:
         ordering = ("product", )
         verbose_name = "Ингредиент"
-        unique_together = ("recipe", "product", )
 
     def __str__(self):
         return f"{self.recipe.title} - {self.product.title} - {self.quantity}"

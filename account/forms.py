@@ -8,6 +8,34 @@ User = get_user_model()
 
 class SignupForm(UserCreationForm):
 
+    password1 = forms.CharField(
+        label="Пароль",
+        max_length=100,
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "password",
+                "type": "password",
+                "id": "user_password",
+            }
+        )
+    )
+
+    password2 = forms.CharField(
+        label="Подтверждение пароля",
+        max_length=100,
+        required=True,
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "confirm password",
+                "type": "password",
+                "id": "user_password",
+            }
+        )
+    )
+
     class Meta:
         model = User
         fields = ("first_name", "username", "email", "password1", "password2",)
@@ -79,7 +107,7 @@ class UserPasswordResetForm(SetPasswordForm):
     )
 
     new_password2 = forms.CharField(
-        label="Confirm password",
+        label="Подтверждение пароля",
         max_length=100,
         required=True,
         widget=forms.PasswordInput(

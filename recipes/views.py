@@ -97,7 +97,7 @@ class IndexView(View):
                 tags__slug__in=tags)
         else:
             recipes = Recipe.objects.filter(
-                tags__slug__in=tags)
+                tags__slug__in=tags).distinct()
         return recipes
 
     def get(self, request, tag_slug=None):
