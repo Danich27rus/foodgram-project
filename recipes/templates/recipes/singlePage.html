@@ -18,6 +18,7 @@
                     <h1 class="single-card__title">{{ recipe.title }}</h1>
                     {% include "recipes/includes/buttonFavorite.html"%}
                 </div>
+
                 <ul class="single-card__items">
                     {% for tag in recipe.tags.all %}
                         <li class="single-card__item"><span class="badge badge_style_{{ tag.color_slug }}">{{ tag.name }}</span></li>
@@ -25,25 +26,25 @@
                 </ul>
                 <div class="single-card__items single-card__items_column">
                     <p class="single-card__text"><span class="icon-time"></span> {{ recipe.duration }} мин.</p>
-                        <ul class="single-card__items">
+                    <ul class="single-card__items">
+                        <li class="single-card__item">
+                            {% include "includes/iconUser.html" with author=recipe.author pclass="single-card__text" %}
+                        </li>
+                        {% if request.user.is_authenticated and request.user == recipe.author %}
                             <li class="single-card__item">
-                                {% include "includes/iconUser.html" with author=recipe.author %}
+                                <a style="margin-left: 2.5em" href="{% url "recipe_edit" recipe_id=recipe.id %}" class="single-card__text">
+                                    Редактировать рецепт
+                                </a>
                             </li>
-                            {% if request.user.is_authenticated and request.user == recipe.author %}
-                                <li class="single-card__item">
-                                    <a style="margin-left: 2.5em" href="{% url "recipe_edit" recipe_id=recipe.id %}" class="single-card__text">
-                                        Редактировать рецепт
-                                    </a>
-                                </li>
-                            {% endif %}
-                        </ul>
+                        {% endif %}
+                    </ul>
                 </div>
                 <ul class="single-card__items">
                     <li class="single-card__item">
                         {% include "recipes/includes/buttonPurchase.html" %}
                     </li>
                     <li class="single-card__item">
-                        {% include "recipes/includes/buttonSubscribe.html" with follower=request.user author=recipe.author %}
+                        {% include "recipes/includes/buttonSubscribe.html" with follower=request.user author=recipe.author buttonsize="button_size_subscribe" %}
                     </li>
                 </ul>
                 <div class="single-card__section">

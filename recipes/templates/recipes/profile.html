@@ -19,7 +19,9 @@
         {% include "recipes/includes/tags.html" %}
         </div>
         <div class="author-subscribe" data-author="{{ author.id }}">
-            {% include "recipes/includes/buttonSubscribe.html" with follower=request.user author=author %}
+            <p style="padding: 0 0 2em 0;">
+                {% include "recipes/includes/buttonSubscribe.html" with follower=request.user author=author buttonsize="button_size_subscribe"%}
+            </p>
         </div>
         <div class="card-list">
             {% for recipe in page %}

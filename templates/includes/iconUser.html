@@ -1,4 +1,4 @@
-<p class="card__text">
+<p class={{ pclass }}>
     {% if author.id %}
         <span class="icon-user"></span>
         <a href="{% url "profile_view" user_id=author.id %}" style="color: black">

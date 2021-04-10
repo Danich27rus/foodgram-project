@@ -34,27 +34,6 @@
         </ul>
     </div>
     <div class="card-user__footer">
-    {% comment %} {{ user.is_authenticated }} {% endcomment %}
-        {% comment %} {% include 'recipes/includes/buttonSubscribe.html' with follower=request.user author=follow.author %} {% endcomment %}
-        {% if user.is_authenticated %}
-            {% if user|subscribed:follow.author %}
-                <button class="button button_style_light-blue button_size_auto" name="subscribe" >Отписаться от автора</button>
-            {% else %}
-                {% if not user == follow.author %}
-                    <button class="button button_style_light-blue button_size_auto" name="subscribe" data-out>Подписаться на автора</button>
-                {% endif %}
-            {% endif %}
-        {% endif %}
+        {% include 'recipes/includes/buttonSubscribe.html' with follower=request.user author=follow.author buttonsize="button_size_auto"%}
     </div>
 </div>
-
-{% block javascript %}
-{% load static %}
-<script src="{% static 'js/config/config.js' %}"></script>
-<script src="{% static 'js/components/MainCards.js' %}"></script>
-<script src="{% static 'js/components/MyFollow.js' %}"></script>
-<script src="{% static 'js/components/Subscribe.js' %}"></script>
-<script src="{% static 'js/components/Header.js' %}"></script>
-<script src="{% static 'js/api/Api.js' %}"></script>
-<script src="{% static 'myFollow.js' %}"></script>
-{% endblock %}

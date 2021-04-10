@@ -7,7 +7,7 @@ const configButton = {
         attr: 'data-out',
         default: {
             class: 'button_style_blue',
-            text: 'Отписаться'
+            text: 'Отписаться от автора'
         },
         active: {
             class: 'button_style_blue',

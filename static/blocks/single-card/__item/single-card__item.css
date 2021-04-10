@@ -1,8 +1,8 @@
-/* .single-card__item {
+.single-card__item {
     margin-right: 8px;
     height: 100%;
-} */
-.single-card__item {
+}
+/* .single-card__item {
     margin-right: 8px;
     height: 100%;
     font-family: 'Montserrat', sans-serif;
@@ -13,4 +13,4 @@
     color: #000000;
     margin: 0 0 15px;
     padding: 0;
-}
+} */

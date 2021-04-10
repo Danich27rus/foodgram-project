@@ -22,7 +22,6 @@
 
                     <li class="shopping-list__item" data-id="{{ recipe.id }}">
                         <div class="recipe recipe_reverse">
-                    
                             <a href="{% url "recipe_view" recipe_id=recipe.id %}" class="link" target="_blank">
                                 {% thumbnail recipe.pic "90x90" crop="center" upscale=True as pic %}
                                     <img src="{{ pic.url }}" alt="{{ recipe.title }}" class="recipe__image recipe__image_big">
@@ -33,7 +32,7 @@
                             </a>
                             <p class="recipe__text"><span class="icon-time"></span> {{ recipe.duration }} мин.</p>
                         </div>
-                        <button class="shopping-list__button link">Удалить</button>
+                        <a href="#" class="shopping-list__button link">Удалить</a>
                     </li>
 
                 {% endfor %}
