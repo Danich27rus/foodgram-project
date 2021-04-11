@@ -1,12 +1,10 @@
 {% load recipes_filters %}
 {% load static %}
-{{ follower }}
-{{ author }}
-{{ author|subscribed:follower }}
+
 {% if follower.is_authenticated and not author == follower%}
     {% if author|subscribed:follower %}
-        <button class="button button_style_light-blue {{ buttonsize }}" name="subscribe" >Отписаться от автора 0</button>
+        <button class="button button_style_light-blue {{ buttonsize }}" name="subscribe">Отписаться от автора</button>
     {% else %}
-        <button class="button button_style_light-blue {{ buttonsize }}" name="subscribe" data-out>Подписаться на автора 0</button>
+        <button class="button button_style_light-blue {{ buttonsize }}" name="subscribe" data-out>Подписаться на автора</button>
     {% endif %}
 {% endif %}

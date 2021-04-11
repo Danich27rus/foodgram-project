@@ -16,6 +16,8 @@
         <div class="card-list">
             {% for follow in page %}
                 {% include "recipes/includes/followItem.html" with follow=follow %}
+            {% empty %}
+                <p>Вы еще ни на кого не подписались.</p>
             {% endfor %}
         </div>
         {% if page.has_other_pages %}
@@ -33,4 +35,8 @@
 <script src="{% static 'js/components/Header.js' %}"></script>
 <script src="{% static 'js/api/Api.js' %}"></script>
 <script src="{% static 'myFollow.js' %}"></script>
+
+{% comment %} <script src="{% static "js/components/SingleCard.js" %}"></script> {% endcomment %}
+{% comment %} <script src="{% static "singlePage.js" %}"></script> {% endcomment %}
+
 {% endblock %}

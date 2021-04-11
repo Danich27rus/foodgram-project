@@ -34,7 +34,7 @@
         </ul>
     </div>
     <div class="card-user__footer">
-        {% include 'recipes/includes/buttonSubscribe.html' with follower=request.user author=follow.author buttonsize="button_size_auto" %}
-        {% comment %} <button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться от автора</button> {% endcomment %}
+        {% comment %} {% include 'recipes/includes/buttonSubscribe.html' with follower=request.user author=follow.author buttonsize="button_size_auto" %} {% endcomment %}
+        <button class="button button_style_light-blue button_size_auto" name="subscribe" >Отписаться</button>
     </div>
 </div>
