@@ -27,7 +27,7 @@ class GetIngredients(View):
 
 
 @method_decorator(login_required, name="dispatch")
-class FollowTo(View):
+class FollowView(View):
 
     def post(self, request):
 
@@ -39,10 +39,6 @@ class FollowTo(View):
         if not created:
             data["success"] = False
         return JsonResponse(data)
-
-
-@method_decorator(login_required, name="dispatch")
-class FollowDelete(View):
 
     def delete(self, request, author_id):
 

@@ -1,11 +1,10 @@
 from django.urls import path
 
-from .views import (FavoriteView, FollowDelete, FollowTo, GetIngredients,
-                    PurchaseView)
+from .views import FavoriteView, FollowView, GetIngredients, PurchaseView
 
 urlpatterns = [
-    path("v1/subscriptions/", FollowTo.as_view(), name="follow_to"),
-    path("v1/subscriptions/<int:author_id>/", FollowDelete.as_view(),
+    path("v1/subscriptions/", FollowView.as_view(), name="follow_to"),
+    path("v1/subscriptions/<int:author_id>/", FollowView.as_view(),
          name="follow_delete"),
 
     path("v1/favorites/", FavoriteView.as_view(), name="favorite_view"),
