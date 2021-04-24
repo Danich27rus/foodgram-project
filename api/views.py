@@ -7,7 +7,12 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import View
+from rest_framework import status
+from rest_framework.mixins import ListModelMixin, DestroyModelMixin, CreateModelMixin
+from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
+from api.serializers import ProductSerializer, FollowSerializer
 from recipes.models import Favorite, Follow, Product, Purchase, Recipe
 
 User = get_user_model()
@@ -24,6 +29,17 @@ class GetIngredients(View):
                                                                    "dimension")
         )
         return JsonResponse(data, safe=False)
+
+
+class IngredientsViewSet(ListModelMixin, GenericViewSet):
+
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        query = self.request.query_params.get("query")
+        queryset = Product.objects.filter(title__startswith=query
+                                          ).values("title", "dimension")
+        return queryset
 
 
 @method_decorator(login_required, name="dispatch")
@@ -50,6 +66,38 @@ class FollowView(View):
         else:
             data = {"success": True}
         return JsonResponse(data)
+
+
+class FollowDestroyViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
+
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
+    lookup_field = 'author'
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def destroy(self, request, *args, **kwargs):
+
+        author_id = kwargs.get("author")
+        user = request.user
+        author = get_object_or_404(User, id=author_id)
+        follow = author.followed.filter(follower=user)
+        data = self.perform_destroy(follow)
+        return Response(data=data, status=status.HTTP_200_OK)
+
+    def perform_destroy(self, instance):
+
+        quantity, obj = instance.delete()
+        if quantity == 0:
+            data = {"success": False}
+        else:
+            data = {"success": True}
+        return data
 
 
 @method_decorator(login_required, name="dispatch")
