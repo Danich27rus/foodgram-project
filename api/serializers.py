@@ -7,6 +7,15 @@ from rest_framework.exceptions import ValidationError
 User = get_user_model()
 
 
+class UserSerializer(serializers.ModelSerializer):
+    snippets = serializers.PrimaryKeyRelatedField(many=True,
+                                                  queryset=Snippet.objects.all())
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'snippets']
+
+
 class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -15,17 +24,6 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
-
-    id = serializers.IntegerField()
-
-    def validate(self, attrs):
-        self.follower = None
-        self.author = None
-        request = self.context.get("request")
-        if request and hasattr(request, "user"):
-            self.follower = request.user
-        self.author = User.objects.get(id=attrs.get("id"))
-        return super().validate(attrs)
 
     class Meta:
         fields = "__all__"

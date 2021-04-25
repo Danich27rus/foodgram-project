@@ -74,12 +74,12 @@ class FollowDestroyViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
     serializer_class = FollowSerializer
     lookup_field = 'author'
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    def perform_create(self, serializer):
+        
+        author = User.objects.get(id=self.request.data["id"])
+        follower = self.request.user
+        serializer.save(author=author, follower=follower)
+        return super().perform_create(serializer)
 
     def destroy(self, request, *args, **kwargs):
 
