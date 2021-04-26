@@ -24,12 +24,12 @@ class PurchaseManager(models.Manager):
 
     def count(self, user):
         try:
-            return super().get_queryset().get(user=user).recipes.count()
+            return super().get_queryset().filter(user=user).recipes.count()
         except self.model.DoesNotExist:
             return 0
 
     def list(self, user):
         try:
-            return super().get_queryset().get(user=user).recipes.all()
+            return super().get_queryset().filter(user=user).all()
         except self.model.DoesNotExist:
             return []

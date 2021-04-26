@@ -53,6 +53,6 @@ def purchased(recipe, user):
 def purchase_count(user):
 
     try:
-        return Purchase.objects.get(user=user).recipes.count()
+        return Purchase.objects.filter(user=user).count()
     except Purchase.DoesNotExist:
         return 0
