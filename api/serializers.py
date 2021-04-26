@@ -7,15 +7,6 @@ from rest_framework.exceptions import ValidationError
 User = get_user_model()
 
 
-class UserSerializer(serializers.ModelSerializer):
-    snippets = serializers.PrimaryKeyRelatedField(many=True,
-                                                  queryset=Snippet.objects.all())
-
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'snippets']
-
-
 class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -28,4 +19,20 @@ class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         fields = "__all__"
         model = Follow
-        read_only_fields = ["follower", "author"]
+        read_only_fields = ["user", "author"]
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = "__all__"
+        model = Favorite
+        read_only_fields = ["user", "recipes"]
+
+
+class PurchaseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        fields = "__all__"
+        model = Purchase
+        read_only_fields = ["user", "recipes"]

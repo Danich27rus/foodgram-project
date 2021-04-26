@@ -7,13 +7,13 @@ register = template.Library()
 
 
 @register.filter
-def subscribed(author, follower):
-    return author.followed.filter(follower=follower).exists()
+def subscribed(author, user):
+    return author.followed.filter(user=user).exists()
 
 
 @register.filter
 def favorite(recipe, user):
-    return Favorite.manager.filter(user=user, recipes=recipe).exists()
+    return Favorite.objects.filter(user=user, recipes=recipe).exists()
 
 
 @register.filter(name='get_filter_values')
@@ -46,13 +46,13 @@ def get_filter_link(request, tag):
 @register.filter
 def purchased(recipe, user):
 
-    return Purchase.manager.filter(recipes=recipe, user=user).exists()
+    return Purchase.objects.filter(recipes=recipe, user=user).exists()
 
 
 @register.filter
 def purchase_count(user):
 
     try:
-        return Purchase.manager.get(user=user).recipes.count()
+        return Purchase.objects.get(user=user).recipes.count()
     except Purchase.DoesNotExist:
         return 0

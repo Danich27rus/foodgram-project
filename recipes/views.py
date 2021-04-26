@@ -126,7 +126,7 @@ class FollowsView(View):
     def get(self, request):
 
         follows = Follow.objects.filter(
-            follower=request.user).order_by("pk")
+            user=request.user).order_by("pk")
         page_num = request.GET.get("page")
         paginator = Paginator(follows, PER_PAGE)
         page = paginator.get_page(page_num)
@@ -180,7 +180,7 @@ class PurchaseView(View):
 
     def get(self, request):
 
-        recipes = Purchase.manager.list(user=request.user)
+        recipes = Purchase.objects.list(user=request.user)
         context = {
             "page_title": "Список покупок",
             "recipes": recipes,

@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 
-from .managers import FavoriteManager
+from .managers import FavoriteManager, PurchaseManager
 from .utils import random_string
 
 User = get_user_model()
@@ -151,7 +151,7 @@ class Favorite(models.Model):
                                 on_delete=models.CASCADE,
                                 related_name="favorite_recipes")
 
-    manager = FavoriteManager()
+    objects = FavoriteManager()
 
     class Meta:
         ordering = ("user", )
@@ -164,7 +164,7 @@ class Favorite(models.Model):
 
 class Follow(models.Model):
 
-    follower = models.ForeignKey(
+    user = models.ForeignKey(
         User,
         related_name="follower",
         on_delete=models.CASCADE,
@@ -178,27 +178,12 @@ class Follow(models.Model):
     )
 
     class Meta:
-        ordering = ("follower", )
+        ordering = ("user", )
         verbose_name = "подписки"
 
     def __str__(self):
         return (f"Автор {self.author.username}, "
-                f"последователь {self.follower.username}")
-
-
-class PurchaseManager(models.Manager):
-
-    def count(self, user):
-        try:
-            return super().get_queryset().get(user=user).recipes.count()
-        except self.model.DoesNotExist:
-            return 0
-
-    def list(self, user):
-        try:
-            return super().get_queryset().get(user=user).recipes.all()
-        except self.model.DoesNotExist:
-            return []
+                f"последователь {self.user.username}")
 
 
 class Purchase(models.Model):
@@ -212,12 +197,12 @@ class Purchase(models.Model):
 
     recipes = models.ManyToManyField(Recipe, verbose_name="рецепты")
 
-    manager = PurchaseManager()
+    objects = PurchaseManager()
 
     class Meta:
         verbose_name = "покупка"
         verbose_name_plural = "покупки"
 
     def __str__(self):
-        ls = ''.join(list(self.manager.list(self.user)))
+        ls = ''.join(list(self.objects.list(self.user)))
         return f"Пользователь {self.user.username}, покупки {ls}"
