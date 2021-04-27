@@ -197,7 +197,7 @@ class GetShopList(View):
         user = request.user
         ingredients = (
             Ingredient.objects.select_related("product").
-            filter(recipe__purchase__user=user).
+            filter(recipe__purchases__user=user).
             values("product__title", "product__dimension").
             annotate(total=Sum("quantity"))
         )

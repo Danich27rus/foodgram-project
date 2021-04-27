@@ -15,6 +15,7 @@ User = get_user_model()
 
 class ModCreateModelMixin(CreateModelMixin):
 
+    # TODO: make more common to fit FollowViewSet
     def perform_create(self, serializer):
 
         recipe = Recipe.objects.get(id=self.request.data["id"])
@@ -72,24 +73,6 @@ class FollowViewSet(CreateModelMixin, ModDestroyModelMixin, GenericViewSet):
         serializer.save(author=author, user=user)
         return super().perform_create(serializer)
 
-    # def destroy(self, request, *args, **kwargs):
-
-    #     author_id = kwargs.get("author")
-    #     user = request.user
-    #     author = get_object_or_404(User, id=author_id)
-    #     follow = user.follower.filter(author=author)
-    #     data = self.perform_destroy(follow)
-    #     return Response(data=data, status=status.HTTP_200_OK)
-
-    # def perform_destroy(self, instance):
-
-    #     quantity, obj = instance.delete()
-    #     if quantity == 0:
-    #         data = {"success": False}
-    #     else:
-    #         data = {"success": True}
-    #     return data
-
 
 class FavoriteViewSet(ModCreateModelMixin, ModDestroyModelMixin, GenericViewSet):
 
@@ -97,45 +80,9 @@ class FavoriteViewSet(ModCreateModelMixin, ModDestroyModelMixin, GenericViewSet)
     serializer_class = FavoriteSerializer
     lookup_field = 'recipes'
 
-    # def destroy(self, request, *args, **kwargs):
-
-    #     recipe_id = kwargs.get("recipe")
-    #     user = request.user
-    #     recipe = get_object_or_404(Recipe, id=recipe_id)
-    #     favorite = user.favorites.filter(recipes=recipe)
-    #     data = self.perform_destroy(favorite)
-    #     return Response(data=data, status=status.HTTP_200_OK)
-
-    # def perform_destroy(self, instance):
-
-    #     quantity, obj = instance.delete()
-    #     if quantity == 0:
-    #         data = {"success": False}
-    #     else:
-    #         data = {"success": True}
-    #     return data
-
 
 class PurchaseViewSet(ModCreateModelMixin, ModDestroyModelMixin, GenericViewSet):
 
     queryset = Purchase.objects.all().distinct()
     serializer_class = PurchaseSerializer
     lookup_field = 'recipes'
-
-    # def destroy(self, request, *args, **kwargs):
-
-    #     recipe_id = kwargs.get("recipe")
-    #     user = request.user
-    #     recipe = get_object_or_404(Recipe, id=recipe_id)
-    #     purchase = user.purchases.filter(recipes=recipe)
-    #     data = self.perform_destroy(purchase)
-    #     return Response(data=data, status=status.HTTP_200_OK)
-
-    # def perform_destroy(self, instance):
-
-    #     quantity, obj = instance.delete()
-    #     if quantity == 0:
-    #         data = {"success": False}
-    #     else:
-    #         data = {"success": True}
-    #     return data

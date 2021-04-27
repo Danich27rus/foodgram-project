@@ -133,3 +133,5 @@ files/
 __pycache__/
 
 .vscode/
+
+db.json
