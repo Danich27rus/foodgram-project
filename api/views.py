@@ -34,6 +34,7 @@ class ModDestroyModelMixin(DestroyModelMixin):
             "user": request.user
         }
         obj = get_object_or_404(queryset, **filter_kwargs)
+        # obj = queryset.filter(**filter_kwargs)
         data = self.perform_destroy(obj)
         return Response(data=data, status=status.HTTP_200_OK)
 

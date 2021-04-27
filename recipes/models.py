@@ -195,7 +195,12 @@ class Purchase(models.Model):
         verbose_name="пользователь"
     )
 
-    recipes = models.ManyToManyField(Recipe, verbose_name="рецепты")
+    recipes = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name="purchases",
+        verbose_name="рецепты"
+    )
 
     objects = PurchaseManager()
 

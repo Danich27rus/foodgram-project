@@ -32,9 +32,6 @@ class FavoriteSerializer(serializers.ModelSerializer):
 
 class PurchaseSerializer(serializers.ModelSerializer):
 
-    recipes = serializers.SlugRelatedField(slug_field="recipes", many=True,
-                                           read_only=True)
-
     class Meta:
         fields = "__all__"
         model = Purchase
