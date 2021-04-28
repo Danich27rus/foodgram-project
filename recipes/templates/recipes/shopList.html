@@ -19,7 +19,6 @@
         <div class="card-list card-list_column">
             <ul class="shopping-list">
                 {% for recipe in recipes %}
-
                     <li class="shopping-list__item" data-id="{{ recipe.id }}">
                         <div class="recipe recipe_reverse">
                             <a href="{% url "recipe_view" recipe_id=recipe.id %}" class="link" target="_blank">

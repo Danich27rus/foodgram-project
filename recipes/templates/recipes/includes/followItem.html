@@ -27,7 +27,7 @@
             {% endfor %}
             {% if follow.author.recipes.count > 3 %}
                 <li class="card-user__item">
-                    <a href="{% url 'profile_view' user_id=follow.author.id %}" class="card-user__link link">Еще {{ follow.author.recipes.count|sub:4|abs }} рецептов...</a>
+                    <a href="{% url 'profile_view' user_id=follow.author.id %}" class="card-user__link link">Еще {{ follow.author.recipes.count|sub:3|abs }} рецептов...</a>
                 </li>
             {% endif %}
         </ul>

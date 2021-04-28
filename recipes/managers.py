@@ -1,4 +1,5 @@
 from django.db import models
+import recipes.models as rmodels
 
 
 class FavoriteManager(models.Manager):
@@ -16,5 +17,22 @@ class FavoriteManager(models.Manager):
                 return recipes.prefetch_related(
                     "author", "tags"
                 ).all()
+        except self.model.DoesNotExist:
+            return []
+
+
+class PurchaseManager(models.Manager):
+
+    def count(self, user):
+        try:
+            return super().get_queryset().get(user=user).recipes.count()
+        except self.model.DoesNotExist:
+            return 0
+
+    def list(self, user):
+        try:
+            return rmodels.Recipe.objects.filter(purchases__user=user)
+            # TODO not django/oop way?
+            # return super().get_queryset().get(user=user).recipes.all()
         except self.model.DoesNotExist:
             return []

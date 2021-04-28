@@ -1,7 +1,7 @@
 {% load recipes_filters %}
 {% load static %}
 
-{% if follower.is_authenticated and not author == follower%}
+{% if user.is_authenticated and not author == follower%}
     {% if author|subscribed:follower %}
         <button class="button button_style_light-blue {{ buttonsize }}" name="subscribe">Отписаться от автора</button>
     {% else %}

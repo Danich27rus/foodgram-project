@@ -1,110 +1,88 @@
-import json
-from urllib.parse import unquote
-
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.utils.decorators import method_decorator
-from django.views import View
+from rest_framework import status
+from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin,
+                                   ListModelMixin)
+from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
+from api.serializers import (FavoriteSerializer, FollowSerializer,
+                             ProductSerializer, PurchaseSerializer)
 from recipes.models import Favorite, Follow, Product, Purchase, Recipe
 
 User = get_user_model()
 
 
-@method_decorator(login_required, name="dispatch")
-class GetIngredients(View):
+class ModCreateModelMixin(CreateModelMixin):
 
-    def get(self, request):
+    # TODO: make more common to fit FollowViewSet
+    def perform_create(self, serializer):
 
-        query = unquote(request.GET.get("query"))
-        data = list(
-            Product.objects.filter(title__startswith=query).values("title",
-                                                                   "dimension")
-        )
-        return JsonResponse(data, safe=False)
+        recipe = Recipe.objects.get(id=self.request.data["id"])
+        user = self.request.user
+        serializer.save(user=user, recipes=recipe)
+        return super().perform_create(serializer)
 
 
-@method_decorator(login_required, name="dispatch")
-class FollowView(View):
+class ModDestroyModelMixin(DestroyModelMixin):
 
-    def post(self, request):
+    def destroy(self, request, *args, **kwargs):
 
-        json_data = json.loads(request.body.decode())
-        author = get_object_or_404(User, id=json_data["id"])
-        data = {"success": True}
-        obj, created = Follow.objects.get_or_create(follower=request.user,
-                                                    author=author)
-        if not created:
-            data["success"] = False
-        return JsonResponse(data)
+        queryset = self.filter_queryset(self.get_queryset())
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        filter_kwargs = {
+            self.lookup_field: self.kwargs[lookup_url_kwarg],
+            "user": request.user
+        }
+        obj = get_object_or_404(queryset, **filter_kwargs)
+        # obj = queryset.filter(**filter_kwargs)
+        data = self.perform_destroy(obj)
+        return Response(data=data, status=status.HTTP_200_OK)
 
-    def delete(self, request, author_id):
+    def perform_destroy(self, instance):
 
-        author = get_object_or_404(User, id=author_id)
-        follow = author.followed.filter(follower=request.user)
-        quantity, obj_subscription = follow.delete()
+        quantity, obj = instance.delete()
         if quantity == 0:
             data = {"success": False}
         else:
             data = {"success": True}
-        return JsonResponse(data)
+        return data
 
 
-@method_decorator(login_required, name="dispatch")
-class FavoriteView(View):
+class IngredientsViewSet(ListModelMixin, GenericViewSet):
 
-    def post(self, request):
+    serializer_class = ProductSerializer
 
-        json_data = json.loads(request.body.decode())
-        recipe_id = json_data["id"]
-        recipe = get_object_or_404(Recipe, id=recipe_id)
-        data = {"success": True}
-        favorite, created = Favorite.manager.get_or_create(user=request.user,
-                                                           recipes=recipe)
-        if not created:
-            data["success"] = False
-        return JsonResponse(data)
-
-    def delete(self, request, recipe_id):
-
-        recipe = get_object_or_404(Recipe, id=recipe_id)
-        favorite = Favorite.manager.filter(user=request.user, recipes=recipe)
-        count, favorites = favorite.delete()
-        if count == 0:
-            data = {"success": False}
-        else:
-            data = {"success": True}
-        return JsonResponse(data)
+    def get_queryset(self):
+        query = self.request.query_params.get("query")
+        queryset = Product.objects.filter(title__startswith=query
+                                          ).values("title", "dimension")
+        return queryset
 
 
-@method_decorator(login_required, name="dispatch")
-class PurchaseView(View):
+class FollowViewSet(CreateModelMixin, ModDestroyModelMixin, GenericViewSet):
 
-    def post(self, request):
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
+    lookup_field = 'author'
 
-        json_data = json.loads(request.body.decode())
-        recipe_id = json_data["id"]
-        recipe = get_object_or_404(Recipe, id=recipe_id)
-        purchase, created = Purchase.manager.get_or_create(user=request.user)
-        data = {"success": True}
-        if not Purchase.manager.filter(recipes=recipe,
-                                       user=request.user).exists():
-            purchase.recipes.add(recipe)
-            return JsonResponse(data)
-        data["success"] = False
-        return JsonResponse(data)
+    def perform_create(self, serializer):
 
-    def delete(self, request, recipe_id):
+        author = User.objects.get(id=self.request.data["id"])
+        user = self.request.user
+        serializer.save(author=author, user=user)
+        return super().perform_create(serializer)
 
-        recipe = get_object_or_404(Recipe, id=recipe_id)
-        data = {"success": True}
-        try:
-            purchase = Purchase.manager.get(user=request.user)
-        except Purchase.DoesNotExist:
-            data["success"] = False
-        if not purchase.recipes.filter(id=recipe_id).exists():
-            data["success"] = False
-        purchase.recipes.remove(recipe)
-        return JsonResponse(data)
+
+class FavoriteViewSet(ModCreateModelMixin, ModDestroyModelMixin, GenericViewSet):
+
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
+    lookup_field = 'recipes'
+
+
+class PurchaseViewSet(ModCreateModelMixin, ModDestroyModelMixin, GenericViewSet):
+
+    queryset = Purchase.objects.all().distinct()
+    serializer_class = PurchaseSerializer
+    lookup_field = 'recipes'
