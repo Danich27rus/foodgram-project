@@ -10,7 +10,7 @@ Foodgram - онлайн-сервис, где пользователи смогу
 
 При работе над проектом использован стек технологий: **[Django](https://www.djangoproject.com/)**, **[Django Rest Framework](https://www.django-rest-framework.org/)**, **[Python](https://www.python.org/)**, **[PostgreSQL](https://www.postgresql.org/)**, **[NGINX](https://nginx.org/)**, **[Docker](https://www.docker.com/)**, **[Docker-Compose](https://docs.docker.com/compose/)**, **[GitHub](https://github.com)**.
 
-## Разворачивание проекта
+## Деплой проекта
 
 1.  Клонируйте проект
 
