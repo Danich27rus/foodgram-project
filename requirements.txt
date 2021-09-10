@@ -20,4 +20,4 @@ python-env==1.0.0
 pytz==2020.5
 six==1.15.0
 sorl-thumbnail==12.7.0
-sqlparse==0.4.1
+sqlparse==0.4.2
