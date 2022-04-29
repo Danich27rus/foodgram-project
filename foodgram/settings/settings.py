@@ -1,42 +1,14 @@
-import os
-from pathlib import Path
-
 import environ
+import os
+
+from pathlib import Path
 
 env = environ.Env()
 environ.Env.read_env()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-if str(BASE_DIR) == '/code':
-    DEBUG = False
-else:
-    DEBUG = True
-
-if not DEBUG:
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', os.environ.get('IP_ADDRESS')]
-    DATABASES = {
-        'default': {
-            'ENGINE': os.environ.get('DB_ENGINE'),
-            'NAME': os.environ.get('DB_NAME'),
-            'USER': os.environ.get('POSTGRES_USER'),
-            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-            'HOST': os.environ.get('DB_HOST'),
-            'PORT': os.environ.get('DB_PORT'),
-        }
-    }
-else:
-    SECRET_KEY = '&=-4pb%_b5=7j#6%_6rv-6v!#02$c)&a26)m^&9hhnn1axf%z&'
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', os.environ.get('IP_ADDRESS')]
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': str(BASE_DIR / 'db.sqlite3'),
-        }
-    }
-
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -45,7 +17,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
     'six',
     'sorl.thumbnail',
     'rest_framework',
@@ -64,7 +35,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'foodgram.urls'
@@ -74,11 +44,10 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR, ],
+        'DIRS': [TEMPLATES_DIR, 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -126,22 +95,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-MAILER_EMAIL_BACKEND = EMAIL_BACKEND
-
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
-
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-
-EMAIL_PORT = os.environ.get('EMAIL_PORT')
-
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 LOGIN_URL = '/account/signin/'
 

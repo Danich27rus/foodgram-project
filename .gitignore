@@ -136,3 +136,6 @@ __pycache__/
 .vscode/
 
 db.json
+
+*.dev.env
+*.prod.env
